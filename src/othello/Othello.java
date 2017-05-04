@@ -4,18 +4,20 @@ import java.util.Arrays;
 
 public class Othello {
 	final private int row=8;
-	private int i,j;
-	public int board[][]=new int[row][row];
+	private int board[][]=new int[row][row];
+	int boardPoint[]=new int[2];
 	boolean initiative;
 	public Othello(){
-		board[3][3]=1;
-		board[4][4]=1;
-		board[3][4]=1;
-		board[4][3]=-7;
+		board[3][3]=5;
+		board[4][4]=5;
+		board[3][4]=-3;
+		board[4][3]=-3;
 		System.out.print(Arrays.deepToString(board));
-		int boardPoint[];
-		int hand[]=new int[6];
 		initiative=true;
+	}
+	
+	void debugChangeInitiative(){
+		initiative=!initiative;
 	}
 	
 	boolean checkLineDrop(int y,int x,int i,int j){
@@ -44,43 +46,63 @@ public class Othello {
 	
 	boolean checkDrop(int y,int x){
 		if (board[y][x]!=0) return false;
-		for (i=-1;i<+2;i++){
-			for (j=-1;j<+2;j++){
+		for (int i=-1;i<+2;i++){
+			for (int j=-1;j<+2;j++){
 				if(checkLineDrop(y,x,i,j))return true;
-				/*flag=false;
-				if (initiative && (i!=0 || j!=0)){
-					check_x=x;
-					check_y=y;
-					while(check_x+i>=0 && check_x+i<=7 && check_y+j>=0 && check_y+j<=7 && board[check_x+i][check_y+j]>0){
-						flag=true;
-						check_x+=i;
-						check_y+=j;
-					}
-					if(flag && check_x+i>=0 && check_x+i<=7 && check_y+j>=0 && check_y+j<=7 && board[check_x+i][check_y+j]<0)
-						return true;
-				}else if(i!=0||j!=0){
-					check_x=x;
-					check_y=y;
-					while(check_x+i>=0 && check_x+i<=7 && check_y+j>=0 && check_y+j<=7 && board[check_x+i][check_y+j]<0){
-						flag=true;
-						check_x+=i;
-						check_y+=j;
-					}
-					if(flag && check_x+i>=0 && check_x+i<=7 && check_y+j>=0 && check_y+j<=7 && board[check_x+i][check_y+j]>0)
-						return true;
-				}*/
 			}
 		}
 		return false;
 	}
 	
-	void stoneDrop(int y,int x,int value){
+	int[] callBoardPoint(){
+		boardPoint[0]=0;
+		boardPoint[1]=0;
+		for(int i=0;i<8;i++){
+			for(int j=0;j<8;j++){
+				if (board[i][j]<0) boardPoint[1]+=board[i][j]+4;
+				if (board[i][j]>0) boardPoint[0]+=board[i][j]-4;
+			}
+		}
+		return boardPoint;
+	}
+	
+	boolean checkDropBoard(){
+		for(int i=0;i<8;i++){
+			for(int j=0;j<8;j++){
+				if(checkDrop(i,j)) return true;
+				initiative=!initiative;
+				if(checkDrop(i,j)){
+					initiative=!initiative;
+					return true;
+				}
+				initiative=!initiative;
+			}
+		}
+		return false;
+	}
+	
+	boolean checkDropSingleBoard(){
+		for(int i=0;i<8;i++){
+			for(int j=0;j<8;j++){
+				if(checkDrop(i,j)) return true;
+			}
+		}
+		return false;
+	}
+	
+	int[][] callBoard(){
+		return board;
+	}
+	
+	boolean stoneDrop(int y,int x,int value){
 		int check_x,check_y;
+		boolean flag=false;
 		if(checkDrop(y,x)){
 			board[y][x]=value;
-			for (i=-1;i<+2;i++){
-				for (j=-1;j<+2;j++){
+			for (int i=-1;i<+2;i++){
+				for (int j=-1;j<+2;j++){
 					if(checkLineDrop(y,x,i,j)){
+						flag=true;
 						check_y=y+i;
 						check_x=x+j;
 						if(initiative){
@@ -100,6 +122,7 @@ public class Othello {
 				}
 			}
 		}
+		return flag;
 	}
 	
 	
