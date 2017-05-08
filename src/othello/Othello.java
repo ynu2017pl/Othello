@@ -1,6 +1,5 @@
+//オセロ計算部分
 package othello;
-
-import java.util.Arrays;
 
 public class Othello {
 	final private int row=8;
@@ -8,16 +7,55 @@ public class Othello {
 	int boardPoint[]=new int[2];
 	boolean initiative;
 	public Othello(){
-		board[3][3]=5;
-		board[4][4]=5;
-		board[3][4]=-3;
-		board[4][3]=-3;
-		System.out.print(Arrays.deepToString(board));
-		initiative=true;
 	}
 	
 	void debugChangeInitiative(){
 		initiative=!initiative;
+	}
+	
+	int[] initBoard(boolean init,int handicap){
+		initiative=init;
+		board[3][3]=5;
+		board[4][4]=5;
+		board[3][4]=-3;
+		board[4][3]=-3;
+		if(handicap==1){
+			board[0][0]=-3;
+		}else if(handicap==2){
+			board[0][0]=-3;
+			board[7][7]=-3;
+		}else if(handicap==3){
+			board[0][0]=-3;
+			board[7][7]=-3;
+			board[0][7]=-3;
+		}else if(handicap==4){
+			board[0][0]=-3;
+			board[7][7]=-3;
+			board[0][7]=-3;
+			board[7][0]=-3;
+		}else if(handicap==-1){
+			board[0][0]=5;
+		}else if(handicap==-2){
+			board[0][0]=5;
+			board[7][7]=5;
+		}else if(handicap==-3){
+			board[0][0]=5;
+			board[7][7]=5;
+			board[0][7]=5;
+		}else if(handicap==-4){
+			board[0][0]=5;
+			board[7][7]=5;
+			board[0][7]=5;
+			board[7][0]=5;
+		}
+		int[] hand=new int[6];
+		hand[0]=10;
+		hand[1]=6;
+		hand[2]=4;
+		hand[3]=10;
+		hand[4]=6;
+		hand[5]=4;
+		return hand;
 	}
 	
 	boolean checkLineDrop(int y,int x,int i,int j){

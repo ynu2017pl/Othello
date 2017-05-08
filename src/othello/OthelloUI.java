@@ -1,3 +1,4 @@
+//オセロUI部分
 package othello;
 import java.awt.Container;
 import java.awt.Font;
@@ -31,33 +32,31 @@ public class OthelloUI extends JFrame implements MouseListener,ChangeListener,Ac
 	private JCheckBox showAbleDrop;
 	private ButtonGroup group;
 	private Container c;
-	private JLabel timeLabel,showTime,showIni,enemy;
+	private JLabel timeLabel,showTime,showIni,enemy,bwPointTemp,blackPoint,whitePoint;
 	private ImageIcon blackIcon[], whiteIcon[], boardIcon[];
 	private int boardPoint[]=new int[2];
 	private int board[][];
 	private int hand[]=new int[6];
+	private int handicap;
 	private Timer timer;
 	private int time=0;
 	private PrintWriter out; //データ送信用オブジェクト
 	private BufferedReader receiver; //データ受信用オブジェクト
 	boolean initiative;
 	Othello othello = new Othello();
-	public OthelloUI(){
+	public OthelloUI(boolean init,int handi,String enemyName){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//ウィンドウを閉じる場合の処理
 		setTitle("オセロ(仮)―通信要素無し");//ウィンドウのタイトル
 		setSize(700, 550);//ウィンドウのサイズを設定
-		initiative=othello.initiative;
-		hand[0]=10;
-		hand[1]=6;
-		hand[2]=4;
-		hand[3]=10;
-		hand[4]=6;
-		hand[5]=4;
+		initiative=init;
+		handicap=handi;
+		hand=othello.initBoard(initiative,handicap);
 		for(int i=0;i<6;i++) hand[i]*=2;//デバッグ用手駒増やし
 		c = getContentPane();//フレームのペインを取得
 		//アイコン設定(画像ファイルをアイコンとして使う)
 		timer = new Timer(1000,this);
-		enemy=new JLabel("対戦相手");
+		boardPoint=othello.callBoardPoint();
+		enemy=new JLabel("対戦相手:"+enemyName);
 		c.add(enemy);
 		enemy.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
 		enemy.setBounds(25, 0,400,50);
@@ -99,15 +98,27 @@ public class OthelloUI extends JFrame implements MouseListener,ChangeListener,Ac
 		showAbleDrop.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
 		showAbleDrop.setBounds(410, 235,400,50);
 		showAbleDrop.addChangeListener(this);
+		bwPointTemp=new JLabel("黒　　　：　　　白");
+		c.add(bwPointTemp);
+		bwPointTemp.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		bwPointTemp.setBounds(100, 430,400,50);
+		blackPoint=new JLabel(String.format("%+03d",boardPoint[1]));
+		c.add(blackPoint);
+		blackPoint.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		blackPoint.setBounds(160, 430,100,50);
+		whitePoint=new JLabel(String.format("%+03d",boardPoint[0]));
+		c.add(whitePoint);
+		whitePoint.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		whitePoint.setBounds(210, 430,100,50);
 		rule=new JButton("ルール確認");
 		c.add(rule);
 		rule.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
-		rule.setBounds(25,430,300,50);
+		rule.setBounds(400,430,150,50);
 		rule.addMouseListener(this);
 		giveup=new JButton("投了");
 		c.add(giveup);
 		giveup.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
-		giveup.setBounds(360,430,300,50);
+		giveup.setBounds(560,430,100,50);
 		giveup.addMouseListener(this);
 		buttonArray=new JButton[8][8];
 		board=othello.callBoard();
@@ -335,14 +346,20 @@ public class OthelloUI extends JFrame implements MouseListener,ChangeListener,Ac
 					initiative=!initiative;
 					updateDisp();
 					boardPoint=othello.callBoardPoint();
+					blackPoint.setText(String.format("%+03d",boardPoint[1]));
+					whitePoint.setText(String.format("%+03d",boardPoint[0]));
 					if(!othello.checkDropBoard()){
 						allDisp();
 						if(boardPoint[1]>boardPoint[0])
 							finish = JOptionPane.showConfirmDialog(this, boardPoint[1]+":"+boardPoint[0]+"で黒の勝ちです。再戦しますか？");
 						else if(boardPoint[1]<boardPoint[0])
 							finish = JOptionPane.showConfirmDialog(this, boardPoint[1]+":"+boardPoint[0]+"で白の勝ちです。再戦しますか？");
-					else
-						finish = JOptionPane.showConfirmDialog(this, boardPoint[1]+":"+boardPoint[0]+"で引き分けです。再戦しますか？");						
+						else if(boardPoint[1]==boardPoint[0] && handicap==5)
+							finish = JOptionPane.showConfirmDialog(this, boardPoint[1]+":"+boardPoint[0]+"で白の引き分け勝ちです。再戦しますか？");
+						else if(boardPoint[1]==boardPoint[0] && handicap==-5)
+							finish = JOptionPane.showConfirmDialog(this, boardPoint[1]+":"+boardPoint[0]+"で黒の引き分け勝ちです。再戦しますか？");
+						else
+							finish = JOptionPane.showConfirmDialog(this, boardPoint[1]+":"+boardPoint[0]+"で引き分けです。再戦しますか？");						
 						if (finish == JOptionPane.YES_OPTION){
 							JOptionPane.showMessageDialog(null, "作ってない");
 						}else if (finish == JOptionPane.NO_OPTION){
@@ -369,7 +386,7 @@ public class OthelloUI extends JFrame implements MouseListener,ChangeListener,Ac
 	
 	public static void main(String[] args) {
 		// TODO 自動生成されたメソッド・スタブ
-		OthelloUI o_UI=new OthelloUI();
+		OthelloUI o_UI=new OthelloUI(false,-3,"エネミー");
 		o_UI.setVisible(true);
 	}
 
