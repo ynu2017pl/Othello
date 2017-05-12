@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -16,6 +17,8 @@ public class RoomUI extends JPanel implements MouseListener{
 	private JButton rCreate,rule,passChange,renew,exitButton,roomButton[];
 	private JLabel title;
 	private JComboBox<String> condiBox;
+	private RoundButton rb[];
+	private ButtonGroup rbGp;
 	public RoomUI(Client c,OthelloUI ou){
 		cl=c;
 		oUI=ou;
@@ -56,16 +59,29 @@ public class RoomUI extends JPanel implements MouseListener{
 		renew.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
 		renew.setBounds(320,10,100,30);
 		renew.addMouseListener(this);
-		roomButton=new JButton[8];
-		for(int i=0;i<8;i++){
+		roomButton=new JButton[56];
+		for(int i=0;i<56;i++){
 			roomButton[i]=new JButton();
 			this.add(roomButton[i]);
-			roomButton[i].setBounds(25+(i%4)*160,75+(i/4)*150,150,140);
+			roomButton[i].setBounds(25+(i%4)*160,75+(i/4-i/8*2)*150,150,140);
 			roomButton[i].addMouseListener(this);
 			roomButton[i].setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
 			roomButton[i].setVerticalAlignment(JLabel.CENTER);
+			if(i>7) roomButton[i].setVisible(false);
 		}
 		roomButton[0].setText("<html>ユーザ名<br>ジョン<br><br>合言葉<br>なし<br>ハンデ<br>引き分け勝ち");
+		rb=new RoundButton[7];
+		rbGp=new ButtonGroup();
+		for(int i=0;i<7;i++){
+			rb[i]=new RoundButton(Integer.toString(i+1));
+			this.add(rb[i]);
+			rb[i].setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
+			rb[i].setBounds(100+i*70,380,50,50);
+			rb[i].addMouseListener(this);
+			rbGp.add(rb[i]);
+		}
+		rb[0].isSelected();
+		
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -82,6 +98,55 @@ public class RoomUI extends JPanel implements MouseListener{
 			int finish = JOptionPane.showConfirmDialog(this, "本当に終了しますか？","終了",0);
 			if (finish == JOptionPane.YES_OPTION){
 				System.exit(0);
+			}
+		}else if(e.getSource()==rb[0]){
+			for(int i=0;i<56;i++){
+				roomButton[i].setVisible(false);
+			}
+			for(int i=0;i<8;i++){
+				roomButton[i].setVisible(true);
+			}
+		}else if(e.getSource()==rb[1]){
+			for(int i=0;i<56;i++){
+				roomButton[i].setVisible(false);
+			}
+			for(int i=8;i<16;i++){
+				roomButton[i].setVisible(true);
+			}
+		}else if(e.getSource()==rb[2]){
+			for(int i=0;i<56;i++){
+				roomButton[i].setVisible(false);
+			}
+			for(int i=16;i<24;i++){
+				roomButton[i].setVisible(true);
+			}
+		}else if(e.getSource()==rb[3]){
+			for(int i=0;i<56;i++){
+				roomButton[i].setVisible(false);
+			}
+			for(int i=24;i<32;i++){
+				roomButton[i].setVisible(true);
+			}
+		}else if(e.getSource()==rb[4]){
+			for(int i=0;i<56;i++){
+				roomButton[i].setVisible(false);
+			}
+			for(int i=32;i<40;i++){
+				roomButton[i].setVisible(true);
+			}
+		}else if(e.getSource()==rb[5]){
+			for(int i=0;i<56;i++){
+				roomButton[i].setVisible(false);
+			}
+			for(int i=40;i<48;i++){
+				roomButton[i].setVisible(true);
+			}
+		}else if(e.getSource()==rb[6]){
+			for(int i=0;i<56;i++){
+				roomButton[i].setVisible(false);
+			}
+			for(int i=48;i<56;i++){
+				roomButton[i].setVisible(true);
 			}
 		}
 		
