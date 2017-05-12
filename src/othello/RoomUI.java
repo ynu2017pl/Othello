@@ -7,12 +7,13 @@ import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class RoomUI extends JPanel implements MouseListener{
 	Client cl;
 	OthelloUI oUI;
-	private JButton rCreate,rule,passChange,renew;
+	private JButton rCreate,rule,passChange,renew,exitButton,roomButton[];
 	private JLabel title;
 	private JComboBox<String> condiBox;
 	public RoomUI(Client c,OthelloUI ou){
@@ -43,13 +44,28 @@ public class RoomUI extends JPanel implements MouseListener{
 		passChange=new JButton("パスワード変更");
 		this.add(passChange);
 		passChange.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
-		passChange.setBounds(460,450,200,30);
+		passChange.setBounds(240,450,200,30);
 		passChange.addMouseListener(this);
+		exitButton=new JButton("終了");
+		this.add(exitButton);
+		exitButton.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		exitButton.setBounds(460,450,200,30);
+		exitButton.addMouseListener(this);
 		renew=new JButton("検索");
 		this.add(renew);
 		renew.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
 		renew.setBounds(320,10,100,30);
 		renew.addMouseListener(this);
+		roomButton=new JButton[8];
+		for(int i=0;i<8;i++){
+			roomButton[i]=new JButton();
+			this.add(roomButton[i]);
+			roomButton[i].setBounds(25+(i%4)*160,75+(i/4)*150,150,140);
+			roomButton[i].addMouseListener(this);
+			roomButton[i].setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
+			roomButton[i].setVerticalAlignment(JLabel.CENTER);
+		}
+		roomButton[0].setText("<html>ユーザ名<br>ジョン<br><br>合言葉<br>なし<br>ハンデ<br>引き分け勝ち");
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -62,6 +78,11 @@ public class RoomUI extends JPanel implements MouseListener{
 			rule.setVisible(true);
 		}else if(e.getSource()==passChange){
 			cl.screenTransition((JPanel)this, "pUI");
+		}else if(e.getSource()==exitButton){
+			int finish = JOptionPane.showConfirmDialog(this, "本当に終了しますか？","終了",0);
+			if (finish == JOptionPane.YES_OPTION){
+				System.exit(0);
+			}
 		}
 		
 	}
