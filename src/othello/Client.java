@@ -7,13 +7,19 @@ public class Client extends JFrame{
 	OthelloUI oUI=new OthelloUI(this);
 	RoomUI rUI=new RoomUI(this,oUI);
 	RoomCreateUI rcUI=new RoomCreateUI(this,oUI);
+	TitleUI tUI=new TitleUI(this);
+	PasswordChangeUI pUI=new PasswordChangeUI(this);
 	public Client(){
 		this.add(oUI);
 		oUI.setVisible(false);
 		this.add(rcUI);
 		rcUI.setVisible(false);
 		this.add(rUI);
-		rUI.setVisible(true);
+		rUI.setVisible(false);
+		this.add(tUI);
+		tUI.setVisible(true);
+		this.add(pUI);
+		pUI.setVisible(false);
 		this.setSize(700, 550);
 	}
 	
@@ -28,6 +34,12 @@ public class Client extends JFrame{
 		}else if(name=="rcUI"){
 			rcUI=(RoomCreateUI)panel;
 			rcUI.setVisible(false);
+		}else if(name=="tUI"){
+			tUI=(TitleUI)panel;
+			tUI.setVisible(false);
+		}else if(name=="pUI"){
+			pUI=(PasswordChangeUI)panel;
+			pUI.setVisible(false);
 		}
 		if(str=="oUI"){
 			oUI.setVisible(true);
@@ -35,6 +47,10 @@ public class Client extends JFrame{
 			rUI.setVisible(true);
 		}else if(str=="rcUI"){
 			rcUI.setVisible(true);
+		}else if(str=="tUI"){
+			tUI.setVisible(true);
+		}else if(str=="pUI"){
+			pUI.setVisible(true);
 		}
 	}
 	

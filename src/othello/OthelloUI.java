@@ -42,6 +42,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 	private PrintWriter out; //データ送信用オブジェクト
 	private BufferedReader receiver; //データ受信用オブジェクト
 	boolean initiative;
+	boolean finiFlag;
 	Client cl;
 	Othello othello = new Othello();
 	public OthelloUI(Client c){
@@ -52,6 +53,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		//this.setTitle("オセロ(仮)―通信要素無し");//ウィンドウのタイトル
 		//setSize(700, 550);//ウィンドウのサイズを設定
 		cl=c;
+		finiFlag=true;
 		this.setSize(700, 550);
 		this.setLayout(null);
 		setName("oUI");
@@ -60,7 +62,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		//アイコン設定(画像ファイルをアイコンとして使う)
 		timer = new Timer(1000,this);
 		boardPoint=othello.callBoardPoint();
-		enemy=new JLabel("対戦相手:");
+		enemy=new JLabel();
 		this.add(enemy);
 		enemy.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
 		enemy.setBounds(25, 0,400,50);
@@ -382,16 +384,19 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 						if (finish == JOptionPane.YES_OPTION){
 							initBoard(initiative,handicap,enemyName);
 						}else{
+							finiFlag=true;
 							cl.screenTransition((JPanel)this, "rUI");
 						}
 					}
-					if(!othello.checkDropSingleBoard()){
+					if(!othello.checkDropSingleBoard()&&!finiFlag){
 						JOptionPane.showMessageDialog(null, "置き場がないためパスします");
 						othello.debugChangeInitiative();//デバッグ用,本来なら通信
 						initiative=!initiative;
 						updateDisp();
 					}
-					timer.start();
+					if(!finiFlag){
+						timer.start();
+					}
 				}
 			}else{
 				JOptionPane.showMessageDialog(null, "選択された石は手元にありません、別の石を選択してください");
@@ -429,6 +434,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		initiative=init;
 		handicap=handi;
 		hand=othello.initBoard(initiative,handicap);
+		enemy.setText("対戦相手:"+enemyName);
 		for(int i=0;i<6;i++) hand[i]*=2;//デバッグ用手駒増やし
 		if(initiative){
 			showIni.setText("あなたは黒です");
@@ -443,6 +449,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 				chooseStone[i].setText("×"+hand[i]);
 			}
 		}
+		finiFlag=false;
 		updateDisp();
 		time=0;
 		timer.start();

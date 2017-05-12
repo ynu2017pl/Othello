@@ -15,11 +15,11 @@ import javax.swing.JTextField;
 public class RoomCreateUI extends JPanel implements MouseListener{
 	OthelloUI oUI;
 	Client cl;
-	JButton roomCreButton,cancel;
-	JLabel handi,aiko,dIni;
-	JRadioButton handiRadio1,handiRadio2,handiRadio3,aikoRadio1,aikoRadio2,dRadio1,dRadio2;
-	JComboBox<String> handiCombo;
-	JTextField aikoText;
+	private JButton roomCreButton,cancel;
+	private JLabel handi,aiko,dIni,title;
+	private JRadioButton handiRadio1,handiRadio2,handiRadio3,aikoRadio1,aikoRadio2,dRadio1,dRadio2;
+	private JComboBox<String> handiCombo;
+	private JTextField aikoText,dText;
 	private boolean initiative=true;
 	private int handicap=0;
 	private String enemyName="エネミー";
@@ -30,6 +30,10 @@ public class RoomCreateUI extends JPanel implements MouseListener{
 		this.setSize(700, 550);
 		this.setName("rcUI");
 		this.setLayout(null);
+		title=new JLabel("ルーム作成");
+		this.add(title);
+		title.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		title.setBounds(10,10,150,30);
 		handi=new JLabel("ハンデ");
 		this.add(handi);
 		handi.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 20));
@@ -94,11 +98,15 @@ public class RoomCreateUI extends JPanel implements MouseListener{
 		dGroup.add(dRadio1);
 		dGroup.add(dRadio2);
 		dRadio1.setSelected(true);
+		dText=new JTextField();
+		this.add(dText);
+		dText.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
+		dText.setBounds(320,350,300,50);
 		
 		roomCreButton=new JButton("オセロ開始(仮)");
 		this.add(roomCreButton);
 		roomCreButton.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
-		roomCreButton.setBounds(100,430,200,50);
+		roomCreButton.setBounds(80,430,200,50);
 		roomCreButton.addMouseListener(this);
 		cancel=new JButton("キャンセル");
 		this.add(cancel);
@@ -131,6 +139,7 @@ public class RoomCreateUI extends JPanel implements MouseListener{
 			}else{
 				initiative=false;
 			}
+			enemyName=dText.getText();
 			
 			if(!initiative) handicap*=-1;
 			oUI.initBoard(initiative,handicap,enemyName);
