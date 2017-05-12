@@ -15,6 +15,11 @@ public class Othello {
 	
 	int[] initBoard(boolean init,int handicap){
 		initiative=init;
+		for(int i=0;i<8;i++){
+			for(int j=0;j<8;j++){
+				board[i][j]=0;
+			}
+		}
 		board[3][3]=5;
 		board[4][4]=5;
 		board[3][4]=-3;

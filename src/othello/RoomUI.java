@@ -9,12 +9,15 @@ import javax.swing.JPanel;
 
 public class RoomUI extends JPanel implements MouseListener{
 	Client cl;
+	OthelloUI oUI;
 	private JButton rule;
-	public RoomUI(Client c){
+	public RoomUI(Client c,OthelloUI ou){
 		cl=c;
-		setName("rUI");
+		oUI=ou;
+		this.setSize(700, 550);
+		this.setName("rUI");
 		this.setLayout(null);
-		rule=new JButton("オセロ開始(仮)");
+		rule=new JButton("部屋作成(仮)");
 		this.add(rule);
 		rule.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
 		rule.setBounds(400,430,200,50);
@@ -23,7 +26,7 @@ public class RoomUI extends JPanel implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-		cl.screenTransition((JPanel)this, "oUI");
+		cl.screenTransition((JPanel)this, "rcUI");
 		
 	}
 	@Override

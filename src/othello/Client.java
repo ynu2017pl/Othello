@@ -4,11 +4,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Client extends JFrame{
-	OthelloUI oUI=new OthelloUI(this,false,-3,"エネミー");
-	RoomUI rUI=new RoomUI(this);
+	OthelloUI oUI=new OthelloUI(this);
+	RoomUI rUI=new RoomUI(this,oUI);
+	RoomCreateUI rcUI=new RoomCreateUI(this,oUI);
 	public Client(){
 		this.add(oUI);
 		oUI.setVisible(false);
+		this.add(rcUI);
+		rcUI.setVisible(false);
 		this.add(rUI);
 		rUI.setVisible(true);
 		this.setSize(700, 550);
@@ -16,21 +19,22 @@ public class Client extends JFrame{
 	
 	public void screenTransition(JPanel panel,String str){
 		String name=panel.getName();
-		System.out.println(name);
 		if(name=="oUI"){
-			System.out.println("入った");
 			oUI=(OthelloUI)panel;
 			oUI.setVisible(false);
-		}else {
+		}else if(name=="rUI") {
 			rUI=(RoomUI)panel;
 			rUI.setVisible(false);
+		}else if(name=="rcUI"){
+			rcUI=(RoomCreateUI)panel;
+			rcUI.setVisible(false);
 		}
 		if(str=="oUI"){
-			System.out.println("入った！");
 			oUI.setVisible(true);
-		}else {
-			System.out.println("入った？");
+		}else if(str=="rUI") {
 			rUI.setVisible(true);
+		}else if(str=="rcUI"){
+			rcUI.setVisible(true);
 		}
 	}
 	

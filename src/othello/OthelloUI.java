@@ -17,7 +17,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -31,14 +30,13 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 	private AbstractButton chooseStone[];
 	private JCheckBox showAbleDrop;
 	private ButtonGroup group;
-	private JFrame othelloFrame;
-	private JPanel othelloBoardPanel,other;
 	private JLabel timeLabel,showTime,showIni,enemy,bwPointTemp,blackPoint,whitePoint;
 	private ImageIcon blackIcon[], whiteIcon[], boardIcon[];
 	private int boardPoint[]=new int[2];
 	private int board[][];
 	private int hand[]=new int[6];
 	private int handicap;
+	private String enemyName;
 	private Timer timer;
 	private int time=0;
 	private PrintWriter out; //データ送信用オブジェクト
@@ -46,7 +44,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 	boolean initiative;
 	Client cl;
 	Othello othello = new Othello();
-	public OthelloUI(Client c,boolean init,int handi,String enemyName){
+	public OthelloUI(Client c){
 		/*othelloBoardPanel=createOthelloBoard(init,handi,enemyName);
 		othelloFrame.add(othelloBoardPanel,null);
 		othelloFrame.validate();*/
@@ -54,18 +52,15 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		//this.setTitle("オセロ(仮)―通信要素無し");//ウィンドウのタイトル
 		//setSize(700, 550);//ウィンドウのサイズを設定
 		cl=c;
+		this.setSize(700, 550);
 		this.setLayout(null);
 		setName("oUI");
 		this.setSize(700, 550);
-		initiative=init;
-		handicap=handi;
-		hand=othello.initBoard(initiative,handicap);
-		for(int i=0;i<6;i++) hand[i]*=2;//デバッグ用手駒増やし
 		//c = getContentPane();//フレームのペインを取得
 		//アイコン設定(画像ファイルをアイコンとして使う)
 		timer = new Timer(1000,this);
 		boardPoint=othello.callBoardPoint();
-		enemy=new JLabel("対戦相手:"+enemyName);
+		enemy=new JLabel("対戦相手:");
 		this.add(enemy);
 		enemy.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
 		enemy.setBounds(25, 0,400,50);
@@ -77,8 +72,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		this.add(showTime);
 		showTime.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 30));
 		showTime.setBounds(485, 310,400,50);
-		if(initiative)	showIni=new JLabel("あなたは黒です");
-		else showIni=new JLabel("あなたは白です");
+		showIni=new JLabel();
 		this.add(showIni);
 		showIni.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
 		showIni.setBounds(450, 360,400,50);
@@ -132,6 +126,8 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		board=othello.callBoard();
 		for(int i=0;i<8;i++){
 			for(int j=0;j<8;j++){
+				buttonArray[i][j]=new JButton();
+				/*
 				if(initiative){
 					if(board[i][j]>0) buttonArray[i][j]=new JButton(whiteIcon[0]);
 					else if(board[i][j]==-7) buttonArray[i][j]=new JButton(blackIcon[6]);
@@ -157,6 +153,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 						else buttonArray[i][j]=new JButton(boardIcon[0]);
 					}else buttonArray[i][j]=new JButton(boardIcon[0]);
 				}
+				*/
 				this.add(buttonArray[i][j]);
 				int y = i * 45+50;
 				int x = j * 45+25;
@@ -168,15 +165,20 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		chooseStone=new JToggleButton[6];
 		group = new ButtonGroup();
 		for(int i=0;i<6;i++){
+			chooseStone[i]=new JToggleButton();
+			chooseStone[i].setHorizontalTextPosition(JToggleButton.CENTER);
+			chooseStone[i].setVerticalTextPosition(JToggleButton.BOTTOM);
+			/*
 			if(initiative){
-				chooseStone[i]=new JToggleButton("×"+hand[i],blackIcon[i+1]);
+				chooseStone[i]=new JToggleButton();
 				chooseStone[i].setHorizontalTextPosition(JToggleButton.CENTER);
 				chooseStone[i].setVerticalTextPosition(JToggleButton.BOTTOM);
 			}else{
-				chooseStone[i]=new JToggleButton("×"+hand[i],whiteIcon[i+1]);
+				chooseStone[i]=new JToggleButton();
 				chooseStone[i].setHorizontalTextPosition(JToggleButton.CENTER);
 				chooseStone[i].setVerticalTextPosition(JToggleButton.BOTTOM);
 			}
+			*/
 			group.add(chooseStone[i]);
 			this.add(chooseStone[i]);
 			int y = 60+(i/3)*90;
@@ -184,46 +186,10 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 			chooseStone[i].setBounds(x, y, 70, 80);//ボタンの大きさと位置を設定する．
 		}
 		chooseStone[0].setSelected(true);
-		timer.start();
+		//timer.start();
 	}
 	
-	public void renewBoard(){
-		board=othello.callBoard();
-		for(int i=0;i<8;i++){
-			for(int j=0;j<8;j++){
-				if(initiative){
-					if(board[i][j]>0) buttonArray[i][j].setIcon(whiteIcon[0]);
-					else if(board[i][j]==-7) buttonArray[i][j].setIcon(blackIcon[6]);
-					else if(board[i][j]==-6) buttonArray[i][j].setIcon(blackIcon[5]);
-					else if(board[i][j]==-5) buttonArray[i][j].setIcon(blackIcon[4]);
-					else if(board[i][j]==-3) buttonArray[i][j].setIcon(blackIcon[1]);
-					else if(board[i][j]==-2) buttonArray[i][j].setIcon(blackIcon[2]);
-					else if(board[i][j]==-1) buttonArray[i][j].setIcon(blackIcon[3]);
-					else if(showAbleDrop.isSelected()){
-						if(othello.checkDrop(i,j)) buttonArray[i][j].setIcon(boardIcon[1]);
-						else buttonArray[i][j].setIcon(boardIcon[0]);
-					}else buttonArray[i][j].setIcon(boardIcon[0]);
-				}else{
-					if(board[i][j]<0) buttonArray[i][j].setIcon(blackIcon[0]);
-					else if(board[i][j]==1) buttonArray[i][j].setIcon(whiteIcon[6]);
-					else if(board[i][j]==2) buttonArray[i][j].setIcon(whiteIcon[5]);
-					else if(board[i][j]==3) buttonArray[i][j].setIcon(whiteIcon[4]);
-					else if(board[i][j]==5) buttonArray[i][j].setIcon(whiteIcon[1]);
-					else if(board[i][j]==6) buttonArray[i][j].setIcon(whiteIcon[2]);
-					else if(board[i][j]==7) buttonArray[i][j].setIcon(whiteIcon[3]);
-					else if(showAbleDrop.isSelected()){
-						if(othello.checkDrop(i,j)) buttonArray[i][j].setIcon(boardIcon[1]);
-						else buttonArray[i][j].setIcon(boardIcon[0]);
-					}else buttonArray[i][j].setIcon(boardIcon[0]);
-				}
-			}
-		}
-		for (int i=0;i<6;i++){
-			chooseStone[i].setText("×"+hand[i]);
-		}
-		if(initiative) showIni.setText("あなたは黒です");//デバッグ用、あとで消す
-		else showIni.setText("あなたは白です");
-	}
+	
 	
 	public void connectServer(String ipAddress, int port){ // サーバに接続
 		//サイトそのままだと通常message用のreceiverクラスが無さそう。なので改良しつつ
@@ -317,6 +283,44 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		updateDisp();
 	}
 	
+	public void renewBoard(){
+		board=othello.callBoard();
+		for(int i=0;i<8;i++){
+			for(int j=0;j<8;j++){
+				if(initiative){
+					if(board[i][j]>0) buttonArray[i][j].setIcon(whiteIcon[0]);
+					else if(board[i][j]==-7) buttonArray[i][j].setIcon(blackIcon[6]);
+					else if(board[i][j]==-6) buttonArray[i][j].setIcon(blackIcon[5]);
+					else if(board[i][j]==-5) buttonArray[i][j].setIcon(blackIcon[4]);
+					else if(board[i][j]==-3) buttonArray[i][j].setIcon(blackIcon[1]);
+					else if(board[i][j]==-2) buttonArray[i][j].setIcon(blackIcon[2]);
+					else if(board[i][j]==-1) buttonArray[i][j].setIcon(blackIcon[3]);
+					else if(showAbleDrop.isSelected()){
+						if(othello.checkDrop(i,j)) buttonArray[i][j].setIcon(boardIcon[1]);
+						else buttonArray[i][j].setIcon(boardIcon[0]);
+					}else buttonArray[i][j].setIcon(boardIcon[0]);
+				}else{
+					if(board[i][j]<0) buttonArray[i][j].setIcon(blackIcon[0]);
+					else if(board[i][j]==1) buttonArray[i][j].setIcon(whiteIcon[6]);
+					else if(board[i][j]==2) buttonArray[i][j].setIcon(whiteIcon[5]);
+					else if(board[i][j]==3) buttonArray[i][j].setIcon(whiteIcon[4]);
+					else if(board[i][j]==5) buttonArray[i][j].setIcon(whiteIcon[1]);
+					else if(board[i][j]==6) buttonArray[i][j].setIcon(whiteIcon[2]);
+					else if(board[i][j]==7) buttonArray[i][j].setIcon(whiteIcon[3]);
+					else if(showAbleDrop.isSelected()){
+						if(othello.checkDrop(i,j)) buttonArray[i][j].setIcon(boardIcon[1]);
+						else buttonArray[i][j].setIcon(boardIcon[0]);
+					}else buttonArray[i][j].setIcon(boardIcon[0]);
+				}
+			}
+		}
+		for (int i=0;i<6;i++){
+			chooseStone[i].setText("×"+hand[i]);
+		}
+		if(initiative) showIni.setText("あなたは黒です");//デバッグ用、あとで消す
+		else showIni.setText("あなたは白です");
+	}
+	
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource()==rule){
 			Rule rule = new Rule();
@@ -368,17 +372,17 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 						if(boardPoint[1]>boardPoint[0])
 							finish = JOptionPane.showConfirmDialog(this, boardPoint[1]+":"+boardPoint[0]+"で黒の勝ちです。再戦しますか？","再戦",0);
 						else if(boardPoint[1]<boardPoint[0])
-							finish = JOptionPane.showConfirmDialog(this, boardPoint[1]+":"+boardPoint[0]+"で白の勝ちです。再戦しますか？");
+							finish = JOptionPane.showConfirmDialog(this, boardPoint[1]+":"+boardPoint[0]+"で白の勝ちです。再戦しますか？","再戦",0);
 						else if(boardPoint[1]==boardPoint[0] && handicap==5)
-							finish = JOptionPane.showConfirmDialog(this, boardPoint[1]+":"+boardPoint[0]+"で白の引き分け勝ちです。再戦しますか？");
+							finish = JOptionPane.showConfirmDialog(this, boardPoint[1]+":"+boardPoint[0]+"で白の引き分け勝ちです。再戦しますか？","再戦",0);
 						else if(boardPoint[1]==boardPoint[0] && handicap==-5)
-							finish = JOptionPane.showConfirmDialog(this, boardPoint[1]+":"+boardPoint[0]+"で黒の引き分け勝ちです。再戦しますか？");
+							finish = JOptionPane.showConfirmDialog(this, boardPoint[1]+":"+boardPoint[0]+"で黒の引き分け勝ちです。再戦しますか？","再戦",0);
 						else
-							finish = JOptionPane.showConfirmDialog(this, boardPoint[1]+":"+boardPoint[0]+"で引き分けです。再戦しますか？");						
+							finish = JOptionPane.showConfirmDialog(this, boardPoint[1]+":"+boardPoint[0]+"で引き分けです。再戦しますか？","再戦",0);						
 						if (finish == JOptionPane.YES_OPTION){
-							JOptionPane.showMessageDialog(null, "作ってない");
-						}else if (finish == JOptionPane.NO_OPTION){
-							JOptionPane.showMessageDialog(null, "作ってない");
+							initBoard(initiative,handicap,enemyName);
+						}else{
+							cl.screenTransition((JPanel)this, "rUI");
 						}
 					}
 					if(!othello.checkDropSingleBoard()){
@@ -408,11 +412,40 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		showTime.setText(min+":"+sec);
 		if(time>299){
 			timer.stop();
-			JOptionPane.showMessageDialog(null, "時間切れです");
+			int finish = JOptionPane.showConfirmDialog(this, "時間切れです。再戦しますか？","再戦",0);
+			if (finish == JOptionPane.YES_OPTION){
+				initBoard(initiative,handicap,enemyName);
+			}else{
+				cl.screenTransition((JPanel)this, "rUI");
+			}
 		}else{
 			time++;
 		}
 			
+	}
+	
+	public void initBoard(boolean init,int handi,String eName){
+		enemyName=eName;
+		initiative=init;
+		handicap=handi;
+		hand=othello.initBoard(initiative,handicap);
+		for(int i=0;i<6;i++) hand[i]*=2;//デバッグ用手駒増やし
+		if(initiative){
+			showIni.setText("あなたは黒です");
+			for(int i=0;i<6;i++){
+				chooseStone[i].setIcon(blackIcon[i+1]);
+				chooseStone[i].setText("×"+hand[i]);
+			}
+		}else{
+			showIni.setText("あなたは白です");
+			for(int i=0;i<6;i++){
+				chooseStone[i].setIcon(whiteIcon[i+1]);
+				chooseStone[i].setText("×"+hand[i]);
+			}
+		}
+		updateDisp();
+		time=0;
+		timer.start();
 	}
 	
 }
