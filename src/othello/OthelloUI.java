@@ -6,11 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -191,68 +187,6 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		//timer.start();
 	}
 	
-	
-	
-	public void connectServer(String ipAddress, int port){ // サーバに接続
-		//サイトそのままだと通常message用のreceiverクラスが無さそう。なので改良しつつ
-		//そもそも必要あるのかわからん、時間あるときに調べておく
-		Socket socket = null;
-		try{
-			socket = new Socket(ipAddress, port); //サーバ(ipAddress, port)に接続
-			out = new PrintWriter(socket.getOutputStream(), true); //データ送信用オブジェクトの用意
-			receiver = new BufferedReader(new InputStreamReader(socket.getInputStream())); //受信用オブジェクトの準備
-			while((receiver.readLine())!=null){
-				// これで受け取れるぽい、なので待ち状態になるのかな。要試運転
-		    }
-		}catch(UnknownHostException e) {
-			System.err.println("ホストのIPアドレスが判定できません: " + e);
-			System.exit(-1);
-		}catch(IOException e) {
-			System.err.println("サーバ接続時にエラーが発生しました: " + e);
-			System.exit(-1);
-		}
-	}
-	
-	
-	public void sendMessage(String msg){	// サーバに操作情報を送信
-		//ここ以降の通信関連はサイトそのまま、なので平気なはず。用途に合わせて変更する。
-		out.println(msg);//送信データをバッファに書き出す
-		out.flush();//送信データを送る
-		System.out.println("サーバにメッセージ " + msg + " を送信しました"); //テスト標準出力
-	}
-	
-	public void receiveMessage(String msg){	// メッセージの受信
-		System.out.println("サーバからメッセージ " + msg + " を受信しました"); //テスト用標準出力
-	}
-	
-	// データ受信用スレッド(内部クラス)
-	class Receiver extends Thread {
-		private InputStreamReader sisr;//受信データ用文字ストリーム
-		private BufferedReader br;//文字ストリーム用バッファ
-
-	// 内部クラスReceiverのコンストラクタ
-		Receiver (Socket socket){
-			try{
-				sisr = new InputStreamReader(socket.getInputStream());//受信データを文字ストリームに
-				br = new BufferedReader(sisr);//文字ストリームをバッファリングする
-			} catch (IOException e) {
-				System.err.println("データ受信時にエラーが発生しました: " + e);
-			}
-		}
-	// 内部クラス Receiverのメソッド
-		public void run(){
-			try{
-				while(true) {//データを受信し続ける
-					String inputLine = br.readLine();//データを一行分読み込む
-					if (inputLine!=null){//データを受信したら
-						receiveMessage(inputLine);//データ受信用メソッドを呼び出す
-					}
-				}
-			}catch(IOException e){
-				System.err.println("データ受信時にエラーが発生しました: " + e);
-			}
-		}
-	}
 	
 	public void updateDisp(){	// 画面を更新する、他の用途がなければrenewBoard()と統合
 		renewBoard();

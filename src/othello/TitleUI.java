@@ -57,12 +57,18 @@ public class TitleUI extends JPanel implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
+		
 		if(e.getSource()==login){
 		}
 		else if(e.getSource()==anew){
 		}
-		JOptionPane.showMessageDialog(null, "入力されたデータ\nユーザ名："+name.getText()+"\npass:まだ未実装");
-		cl.screenTransition((JPanel)this, "rUI");
+		PasswordManagement pm=new PasswordManagement();
+		if (pm.checkAvailable(pass.getPassword())){
+			String password = pm.issueHash(pass.getPassword());
+			JOptionPane.showMessageDialog(null, "入力されたデータ\nユーザ名："+name.getText()+"\npass:"+password);
+			cl.screenTransition((JPanel)this, "rUI");
+		}
+		
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {

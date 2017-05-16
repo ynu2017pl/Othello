@@ -61,7 +61,7 @@ public class RoomUI extends JPanel implements MouseListener{
 		renew.addMouseListener(this);
 		roomButton=new JButton[56];
 		for(int i=0;i<56;i++){
-			roomButton[i]=new JButton();
+			roomButton[i]=new JButton("空");
 			this.add(roomButton[i]);
 			roomButton[i].setBounds(25+(i%4)*160,75+(i/4-i/8*2)*150,150,140);
 			roomButton[i].addMouseListener(this);

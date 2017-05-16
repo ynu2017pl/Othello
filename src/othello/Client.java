@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Client extends JFrame{
+	//ConnectServer cs=new ConnectServer();
 	OthelloUI oUI=new OthelloUI(this);
 	RoomUI rUI=new RoomUI(this,oUI);
 	RoomCreateUI rcUI=new RoomCreateUI(this,oUI);
