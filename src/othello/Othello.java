@@ -89,6 +89,7 @@ public class Othello {
 	}
 	
 	boolean checkDrop(int y,int x){
+		if (x<0||x>7||y<0||y>7) return false;
 		if (board[y][x]!=0) return false;
 		for (int i=-1;i<+2;i++){
 			for (int j=-1;j<+2;j++){

@@ -1,15 +1,20 @@
 package othello;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
-public class Client extends JFrame{
+public class Client extends JFrame implements ActionListener{
 	ConnectServer cs=new ConnectServer();
 	private String[] connect;
+	private String userName="";
 	OthelloUI oUI=new OthelloUI(this);
 	RoomUI rUI=new RoomUI(this,oUI);
 	RoomCreateUI rcUI=new RoomCreateUI(this,oUI);
-	TitleUI tUI=new TitleUI(this,cs);
+	TitleUI tUI=new TitleUI(this);
 	PasswordChangeUI pUI=new PasswordChangeUI(this);
 	public Client(){
 		connect=new String[1];
@@ -64,8 +69,26 @@ public class Client extends JFrame{
 		System.out.println("サーバにメッセージ " + connect[0] + " を送信しました"); //テスト標準出力
 	}
 	
-	public String[] waitConnection(){
+	public String[] catchConnection(){
 		return connect;
+	}
+	
+	public String[] waitConnection(){
+		String[] con;
+		Timer timer=new Timer(1000,this);
+		do{
+			timer.setInitialDelay(5000);
+			con=this.catchConnection();
+		}while(con[0]=="-");
+		return con;
+	}
+	
+	public void writeUserName(String name){
+		userName=name;
+	}
+	
+	public String catchUserName(){
+		return userName;
 	}
 	
 	public void initConnection(){
@@ -73,11 +96,21 @@ public class Client extends JFrame{
 		connect[0]="-";
 	}
 	
+	public void send(String msg){
+		cs.sendMessage(msg);
+	}
+	
 	public static void main(String[] args) {
 		// TODO 自動生成されたメソッド・スタブ
 		Client cl = new Client(); 
 		cl.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		cl.setVisible(true);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO 自動生成されたメソッド・スタブ
+		
 	}
 
 

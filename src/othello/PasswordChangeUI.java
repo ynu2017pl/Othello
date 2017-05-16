@@ -64,13 +64,13 @@ public class PasswordChangeUI extends JPanel implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
 		if(e.getSource()==change){
+			PasswordManagement pm=new PasswordManagement(cl);
+			if(pm.checkRenew(oldPass.getPassword(),newPass.getPassword(),renewPass.getPassword()))
+				cl.screenTransition((JPanel)this, "rUI");
 		}
 		else if(e.getSource()==cancel){
-		}
-		//JOptionPane.showMessageDialog(null, "変更newPass:まだ未実装");
-		PasswordManagement pm=new PasswordManagement();
-		if(pm.checkRenew(oldPass.getPassword(),newPass.getPassword(),renewPass.getPassword()))
 			cl.screenTransition((JPanel)this, "rUI");
+		}
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {

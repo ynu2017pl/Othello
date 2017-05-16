@@ -97,6 +97,7 @@ public class RoomUI extends JPanel implements MouseListener{
 		}else if(e.getSource()==exitButton){
 			int finish = JOptionPane.showConfirmDialog(this, "本当に終了しますか？","終了",0);
 			if (finish == JOptionPane.YES_OPTION){
+				cl.send("10");
 				System.exit(0);
 			}
 		}else if(e.getSource()==rb[0]){

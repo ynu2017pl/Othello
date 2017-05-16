@@ -1,13 +1,18 @@
 package othello;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.security.MessageDigest;
 import java.util.Arrays;
 
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
-public class PasswordManagement {
-	public PasswordManagement(){
-		
+public class PasswordManagement implements ActionListener {
+	Client cl;
+	String[] connect;
+	public PasswordManagement(Client c){
+		cl=c;
 	}
 	public String issueHash(char[] pass){
 		try{
@@ -56,10 +61,29 @@ public class PasswordManagement {
 			}
 		}
 		String password=this.issueHash(newpass);
+		String oldpassword=this.issueHash(oldpass);
 		//ここで更新手続き
 		//サーバを介して旧パスワードとの比較
-		JOptionPane.showMessageDialog(null, "パスワードを変更しました\n"+password);
-		return true;
+		Timer timer=new Timer(1000,this);
+		cl.send(new String("2,"+cl.catchUserName()+","+oldpassword+","+password));
+		do{
+			timer.setInitialDelay(5000);
+			connect=cl.waitConnection();
+		}while(connect[0]=="-");
+		if(connect[0].equals("2")){
+			cl.initConnection();
+			JOptionPane.showMessageDialog(null, "パスワードを変更できました。");
+			return true;
+		}else{
+			cl.initConnection();
+			JOptionPane.showMessageDialog(null, "パスワードの変更に失敗しました。もう一度試してください");
+			return false;
+		}
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO 自動生成されたメソッド・スタブ
+		
 	}
 	
 }

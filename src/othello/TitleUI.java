@@ -21,10 +21,8 @@ public class TitleUI extends JPanel implements MouseListener,ActionListener{
 	private JLabel title,passLabel,nameLabel;
 	private JButton login,anew;
 	private String[] connect;
-	ConnectServer cs;
-	public TitleUI(Client c,ConnectServer cser){
+	public TitleUI(Client c){
 		cl=c;
-		cs=cser;
 		this.setSize(700, 550);
 		this.setName("tUI");
 		this.setLayout(null);
@@ -63,21 +61,28 @@ public class TitleUI extends JPanel implements MouseListener,ActionListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-		
-		if(e.getSource()==login){
-			cl.screenTransition((JPanel)this, "rUI");
-		}
-		else if(e.getSource()==anew){
-		}
-		PasswordManagement pm=new PasswordManagement();
+		Timer timer=new Timer(1000,this);
+		PasswordManagement pm=new PasswordManagement(cl);
 		if (pm.checkAvailable(pass.getPassword())){
 			String password = pm.issueHash(pass.getPassword());
 			if(e.getSource()==login){
-				JOptionPane.showMessageDialog(null, "入力されたデータ\nユーザ名："+name.getText()+"\npass:"+password);
+				cl.send(new String("1,"+name.getText()+","+password));
+				do{
+					timer.setInitialDelay(5000);
+					connect=cl.waitConnection();
+				}while(connect[0]=="-");
+				if(connect[0].equals("1")){
+					cl.initConnection();
+					JOptionPane.showMessageDialog(null, "ログインできました。\nユーザ名："+name.getText());
+					cl.writeUserName(name.getText());
+					cl.screenTransition((JPanel)this, "rUI");
+				}else{
+					cl.initConnection();
+					JOptionPane.showMessageDialog(null, "ログインに失敗しました。もう一度試してください");
+				}
 			}
 			else if(e.getSource()==anew){
-				cs.sendMessage(new String("0,"+name.getText()+","+password));
-				Timer timer=new Timer(1000,this);
+				cl.send(new String("0,"+name.getText()+","+password));
 				do{
 					timer.setInitialDelay(5000);
 					connect=cl.waitConnection();
@@ -89,6 +94,7 @@ public class TitleUI extends JPanel implements MouseListener,ActionListener{
 					cl.screenTransition((JPanel)this, "rUI");
 				}else{
 					cl.initConnection();
+					JOptionPane.showMessageDialog(null, "新規登録に失敗しました。もう一度試してください");
 				}
 			}
 			
