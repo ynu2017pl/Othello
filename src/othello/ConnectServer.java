@@ -10,12 +10,14 @@ import java.net.UnknownHostException;
 public class ConnectServer {
 	private PrintWriter out; //データ送信用オブジェクト
 	private Receiver receiver; //データ受信用オブジェクト
+	Client cl;
 	public ConnectServer(){
-		this.connectServer("localhost", 8000);
+		
 	}
 	
-	public void connectServer(String ipAddress, int port){	// サーバに接続
+	public void connectServer(String ipAddress, int port,Client c){	// サーバに接続
 		Socket socket = null;
+		cl=c;
 		try {
 			socket = new Socket(ipAddress, port); //サーバ(ipAddress, port)に接続
 			out = new PrintWriter(socket.getOutputStream(), true); //データ送信用オブジェクトの用意
@@ -56,6 +58,7 @@ public class ConnectServer {
 				while(true) {//データを受信し続ける
 					String inputLine = br.readLine();//受信データを一行分読み込む
 					if (inputLine != null){//データを受信したら
+						//String[] message=inputLine.split(",",0);
 						receiveMessage(inputLine);//データ受信用メソッドを呼び出す
 					}
 				}
@@ -67,5 +70,6 @@ public class ConnectServer {
 
 	public void receiveMessage(String msg){	// メッセージの受信
 		System.out.println("サーバからメッセージ " + msg + " を受信しました"); //テスト用標準出力
+		cl.changeConnection(msg);
 	}
 }

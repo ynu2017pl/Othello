@@ -39,6 +39,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 	private BufferedReader receiver; //データ受信用オブジェクト
 	boolean initiative;
 	boolean finiFlag;
+	int dropCount=0;
 	Client cl;
 	Othello othello = new Othello();
 	public OthelloUI(Client c){
@@ -367,6 +368,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		enemyName=eName;
 		initiative=init;
 		handicap=handi;
+		dropCount=0;
 		hand=othello.initBoard(initiative,handicap);
 		enemy.setText("対戦相手:"+enemyName);
 		for(int i=0;i<6;i++) hand[i]*=2;//デバッグ用手駒増やし

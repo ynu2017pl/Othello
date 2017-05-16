@@ -6,6 +6,7 @@ public class Othello {
 	private int board[][]=new int[row][row];
 	int boardPoint[]=new int[2];
 	boolean initiative;
+	
 	public Othello(){
 	}
 	

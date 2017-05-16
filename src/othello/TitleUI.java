@@ -1,6 +1,8 @@
 package othello;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -10,15 +12,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 
-public class TitleUI extends JPanel implements MouseListener{
+public class TitleUI extends JPanel implements MouseListener,ActionListener{
 	Client cl;
 	private JPasswordField pass;
 	private JTextField name;
 	private JLabel title,passLabel,nameLabel;
 	private JButton login,anew;
-	public TitleUI(Client c){
+	private String[] connect;
+	ConnectServer cs;
+	public TitleUI(Client c,ConnectServer cser){
 		cl=c;
+		cs=cser;
 		this.setSize(700, 550);
 		this.setName("tUI");
 		this.setLayout(null);
@@ -59,16 +65,34 @@ public class TitleUI extends JPanel implements MouseListener{
 		// TODO 自動生成されたメソッド・スタブ
 		
 		if(e.getSource()==login){
+			cl.screenTransition((JPanel)this, "rUI");
 		}
 		else if(e.getSource()==anew){
 		}
 		PasswordManagement pm=new PasswordManagement();
 		if (pm.checkAvailable(pass.getPassword())){
 			String password = pm.issueHash(pass.getPassword());
-			JOptionPane.showMessageDialog(null, "入力されたデータ\nユーザ名："+name.getText()+"\npass:"+password);
-			cl.screenTransition((JPanel)this, "rUI");
+			if(e.getSource()==login){
+				JOptionPane.showMessageDialog(null, "入力されたデータ\nユーザ名："+name.getText()+"\npass:"+password);
+			}
+			else if(e.getSource()==anew){
+				cs.sendMessage(new String("0,"+name.getText()+","+password));
+				Timer timer=new Timer(1000,this);
+				do{
+					timer.setInitialDelay(5000);
+					connect=cl.waitConnection();
+				}while(connect[0]=="-");
+				System.out.print("入った"+connect[0]+"うん");
+				if(connect[0].equals("14")){
+					cl.initConnection();
+					JOptionPane.showMessageDialog(null, "登録できました\n入力されたデータ\nユーザ名："+name.getText());
+					cl.screenTransition((JPanel)this, "rUI");
+				}else{
+					cl.initConnection();
+				}
+			}
+			
 		}
-		
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -87,6 +111,11 @@ public class TitleUI extends JPanel implements MouseListener{
 	}
 	@Override
 	public void mouseExited(MouseEvent e) {
+		// TODO 自動生成されたメソッド・スタブ
+		
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
 		
 	}

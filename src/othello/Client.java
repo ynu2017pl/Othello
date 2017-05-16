@@ -4,13 +4,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Client extends JFrame{
-	//ConnectServer cs=new ConnectServer();
+	ConnectServer cs=new ConnectServer();
+	private String[] connect;
 	OthelloUI oUI=new OthelloUI(this);
 	RoomUI rUI=new RoomUI(this,oUI);
 	RoomCreateUI rcUI=new RoomCreateUI(this,oUI);
-	TitleUI tUI=new TitleUI(this);
+	TitleUI tUI=new TitleUI(this,cs);
 	PasswordChangeUI pUI=new PasswordChangeUI(this);
 	public Client(){
+		connect=new String[1];
+		connect[0]="-";
+		cs.connectServer("localhost", 10000,this);
 		this.add(oUI);
 		oUI.setVisible(false);
 		this.add(rcUI);
@@ -55,11 +59,26 @@ public class Client extends JFrame{
 		}
 	}
 	
+	synchronized public void changeConnection(String msg){
+		connect=msg.split(",",0);
+		System.out.println("サーバにメッセージ " + connect[0] + " を送信しました"); //テスト標準出力
+	}
+	
+	public String[] waitConnection(){
+		return connect;
+	}
+	
+	public void initConnection(){
+		connect=new String[1];
+		connect[0]="-";
+	}
+	
 	public static void main(String[] args) {
 		// TODO 自動生成されたメソッド・スタブ
 		Client cl = new Client(); 
 		cl.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		cl.setVisible(true);
 	}
+
 
 }
