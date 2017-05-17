@@ -8,6 +8,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -15,6 +16,7 @@ import javax.swing.JTextField;
 public class RoomCreateUI extends JPanel implements MouseListener{
 	OthelloUI oUI;
 	Client cl;
+	private String[] connect,check;
 	private JButton roomCreButton,cancel;
 	private JLabel handi,aiko,dIni,title;
 	private JRadioButton handiRadio1,handiRadio2,handiRadio3,aikoRadio1,aikoRadio2,dRadio1,dRadio2;
@@ -61,7 +63,7 @@ public class RoomCreateUI extends JPanel implements MouseListener{
 		handiCombo.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
 		handiCombo.setBounds(480,100,140,50);
 		
-		aiko=new JLabel("合言葉　　※4桁の数字を入力してください、だっけ？あとで確認");
+		aiko=new JLabel("合言葉　　※現状はここがなし＝黒、あり＝白、合言葉＝相手の名前");
 		this.add(aiko);
 		aiko.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 20));
 		aiko.setBounds(10,200,700,50);
@@ -115,7 +117,34 @@ public class RoomCreateUI extends JPanel implements MouseListener{
 		cancel.addMouseListener(this);
 		//this.setBackground(Color.BLACK);//各ボタンの範囲確認用
 	}
-	@Override
+	
+public boolean battleStart(){
+	while(!connect[0].equals("4")){
+		connect=cl.waitConnection();
+	}
+	cl.initConnection();
+	int start;
+	start = JOptionPane.showConfirmDialog(this, connect[3]+"と戦いますか？","対戦開始",0);
+	if (start == JOptionPane.YES_OPTION){
+		cl.send("6,1");
+		do{
+			check=cl.waitConnection();
+		}while(!check[0].equals("6"));
+		if(check[1].equals("1")) {
+			cl.initConnection();
+			return true;
+		}else{
+			cl.initConnection();
+			return false;
+		}
+	}else{
+		cl.send("6,0");
+		
+		return false;
+	}
+}
+	
+	@Override	
 	public void mouseClicked(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
 		if(e.getSource()==roomCreButton){
@@ -133,16 +162,28 @@ public class RoomCreateUI extends JPanel implements MouseListener{
 			}
 			
 			//ここで通信待機、敵の名前やら先手後手情報が来るまで待つ
-			
+			if(!aikoText.getText().equals("")){
+				cl.send("4,"+handicap+","+aikoRadio1.isSelected()+","+aikoText.getText());
+			}else{
+				cl.send("4,"+handicap+","+aikoRadio1.isSelected()+",名称不明");
+			}
+			connect=cl.waitConnection();
+			while(true){
+				if (battleStart()) break;
+			}
+			/*
 			if(dRadio1.isSelected()){
 				initiative=true;
 			}else{
 				initiative=false;
 			}
 			enemyName=dText.getText();
+			*/
+			System.out.print(Integer.getInteger(connect[1]));
+			int hand=Integer.parseInt(connect[1]);
+			if(Boolean.parseBoolean(connect[2])) handicap*=-1;
+			oUI.initBoard(Boolean.parseBoolean(connect[2]),hand,connect[3]);
 			
-			if(!initiative) handicap*=-1;
-			oUI.initBoard(initiative,handicap,enemyName);
 			cl.screenTransition((JPanel)this, "oUI");
 		}else if(e.getSource()==cancel){
 			cl.screenTransition((JPanel)this, "rUI");

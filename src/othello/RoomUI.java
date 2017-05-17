@@ -14,8 +14,9 @@ import javax.swing.JPanel;
 public class RoomUI extends JPanel implements MouseListener{
 	Client cl;
 	OthelloUI oUI;
+	private String[] connect;
 	private JButton rCreate,rule,passChange,renew,exitButton,roomButton[];
-	private JLabel title;
+	private JLabel title,roomLabel[];
 	private JComboBox<String> condiBox;
 	private RoundButton rb[];
 	private ButtonGroup rbGp;
@@ -59,17 +60,48 @@ public class RoomUI extends JPanel implements MouseListener{
 		renew.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
 		renew.setBounds(320,10,100,30);
 		renew.addMouseListener(this);
+		
 		roomButton=new JButton[56];
+		roomLabel=new JLabel[56*4];
 		for(int i=0;i<56;i++){
-			roomButton[i]=new JButton("空");
+			roomLabel[i*4]=new JLabel("ユーザ名");
+			this.add(roomLabel[i*4]);
+			roomLabel[i*4].setBounds(25+(i%4)*160,65+(i/4-i/8*2)*160,150,20);
+			roomLabel[i*4].addMouseListener(this);
+			roomLabel[i*4].setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
+			roomLabel[i*4].setHorizontalAlignment(JLabel.CENTER);
+			if(i>7) roomLabel[i*4].setVisible(false);
+			roomLabel[i*4+1]=new JLabel("名前");
+			this.add(roomLabel[i*4+1]);
+			roomLabel[i*4+1].setBounds(25+(i%4)*160,85+(i/4-i/8*2)*160,150,20);
+			roomLabel[i*4+1].addMouseListener(this);
+			roomLabel[i*4+1].setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
+			roomLabel[i*4+1].setHorizontalAlignment(JLabel.CENTER);
+			if(i>7) roomLabel[i*4+1].setVisible(false);
+			roomLabel[i*4+2]=new JLabel("ハンデ");
+			this.add(roomLabel[i*4+2]);
+			roomLabel[i*4+2].setBounds(25+(i%4)*160,125+(i/4-i/8*2)*160,150,20);
+			roomLabel[i*4+2].addMouseListener(this);
+			roomLabel[i*4+2].setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
+			roomLabel[i*4+2].setHorizontalAlignment(JLabel.CENTER);
+			if(i>7) roomLabel[i*4+2].setVisible(false);
+			roomLabel[i*4+3]=new JLabel("合言葉");
+			this.add(roomLabel[i*4+3]);
+			roomLabel[i*4+3].setBounds(25+(i%4)*160,145+(i/4-i/8*2)*160,150,20);
+			roomLabel[i*4+3].addMouseListener(this);
+			roomLabel[i*4+3].setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
+			roomLabel[i*4+3].setHorizontalAlignment(JLabel.CENTER);
+			if(i>7) roomLabel[i*4+3].setVisible(false);
+			roomButton[i]=new JButton("入室");
 			this.add(roomButton[i]);
-			roomButton[i].setBounds(25+(i%4)*160,75+(i/4-i/8*2)*150,150,140);
+			roomButton[i].setBounds(25+(i%4)*160,175+(i/4-i/8*2)*160,150,30);
 			roomButton[i].addMouseListener(this);
 			roomButton[i].setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
 			roomButton[i].setVerticalAlignment(JLabel.CENTER);
 			if(i>7) roomButton[i].setVisible(false);
+			roomButton[i].setActionCommand("-1");
 		}
-		roomButton[0].setText("<html>ユーザ名<br>ジョン<br><br>合言葉<br>なし<br>ハンデ<br>引き分け勝ち");
+		roomButton[0].setText("入室");
 		rb=new RoundButton[7];
 		rbGp=new ButtonGroup();
 		for(int i=0;i<7;i++){
@@ -149,9 +181,61 @@ public class RoomUI extends JPanel implements MouseListener{
 			for(int i=48;i<56;i++){
 				roomButton[i].setVisible(true);
 			}
+		}else if(e.getSource()==renew){
+			int con,count=0;
+			while(rb[count].isSelected()) count++;
+			count++;
+			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=0;
+			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
+			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
+			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
+			else if(condiBox.getSelectedItem().equals("ハンデ:3子局")) con=3;
+			else if(condiBox.getSelectedItem().equals("ハンデ:4子局")) con=4;
+			else con=6;
+			cl.send("3,"+count+","+con);
+			connect=cl.waitConnection();
+			while(!connect[0].equals("3")&&!connect[0].equals("11")){
+				cl.initConnection();
+				connect=cl.waitConnection();
+			}
+			cl.initConnection();
+			for(int i=0;i<connect.length/3;i++){
+				roomLabel[i+1].setText("仮");//暫定
+				if(connect[2].equals("0")) {
+					roomLabel[i+2].setText("ハンデ:なし");
+					roomLabel[i+3].setText("合言葉：なし");
+				}else if(connect[2].equals("1")) {
+					roomLabel[i+2].setText("ハンデ:1子局");
+					roomLabel[i+3].setText("合言葉：なし");
+				}else if(connect[2].equals("2")) {
+					roomLabel[i+2].setText("ハンデ:2子局");
+					roomLabel[i+3].setText("合言葉：なし");
+				}else if(connect[2].equals("3")) {
+					roomLabel[i+2].setText("ハンデ:3子局");
+					roomLabel[i+3].setText("合言葉：なし");
+				}else if(connect[2].equals("4")) {
+					roomLabel[i+2].setText("ハンデ:4子局");
+					roomLabel[i+3].setText("合言葉：なし");
+				}else if(connect[2].equals("5")) {
+					roomLabel[i+2].setText("ハンデ：引き分け勝ち");
+					roomLabel[i+3].setText("合言葉：なし");
+				}else{
+					roomLabel[i+2].setText("ハンデ：なし");
+					roomLabel[i+3].setText("合言葉：あり");
+				}
+				roomButton[i].setActionCommand(connect[1]);
+			}
+		}else{
+			JButton theButton = (JButton)e.getComponent();//クリックしたオブジェクトを得る．キャストを忘れずに
+			String command = theButton.getActionCommand();//ボタンの名前を取り出す
+			if (!command.equals("-1")){
+				
+				cl.screenTransition((JPanel)this, "oUI");
+			}
 		}
 		
 	}
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
