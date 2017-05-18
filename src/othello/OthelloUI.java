@@ -338,8 +338,8 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 					time=0;
 					hand[i]--;
 					//System.out.print(Arrays.deepToString(board));
-					othello.debugChangeInitiative();//デバッグ用
-					initiative=!initiative;
+					//othello.debugChangeInitiative();//デバッグ用
+					//initiative=!initiative;
 					updateDisp();
 					boardPoint=othello.callBoardPoint();
 					stonecount++;
@@ -386,8 +386,8 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 						}else{
 							finiFlag=checkWin();
 						}
-						othello.debugChangeInitiative();//デバッグ用,本来なら通信
-						initiative=!initiative;
+						//othello.debugChangeInitiative();//デバッグ用,本来なら通信
+						//initiative=!initiative;
 						updateDisp();
 					}else if(!finiFlag){
 						cl.send("7,"+num/8+","+num%8+","+score);

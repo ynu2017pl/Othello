@@ -255,7 +255,7 @@ public class RoomUI extends JPanel implements MouseListener{
 							connect=cl.waitConnection();
 						}
 						if(connect[0].equals("14")){
-							oUI.initBoard(Boolean.parseBoolean("true"),changeStrHand(roomLabel[Integer.parseInt(command[1])*4+2].getText()),roomLabel[Integer.parseInt(command[1])*4+1].getText());
+							oUI.initBoard(Boolean.parseBoolean(connect[1]),changeStrHand(roomLabel[Integer.parseInt(command[1])*4+2].getText()),roomLabel[Integer.parseInt(command[1])*4+1].getText());
 							cl.screenTransition((JPanel)this, "oUI");
 						}else{
 							JOptionPane.showMessageDialog(null, "接続することができませんでした");
@@ -264,12 +264,12 @@ public class RoomUI extends JPanel implements MouseListener{
 				}else{
 					cl.send("5,"+command[0]);
 					connect=cl.waitConnection();
-					while(!connect[0].equals("14")&&!connect[0].equals("15")){
+					while(!connect[0].equals("12")&&!connect[0].equals("15")){
 						cl.initConnection();
 						connect=cl.waitConnection();
 					}
-					if(connect[0].equals("14")){
-						oUI.initBoard(Boolean.parseBoolean("true"),changeStrHand(roomLabel[Integer.parseInt(command[1])*4+2].getText()),roomLabel[Integer.parseInt(command[1])*4+1].getText());
+					if(connect[0].equals("12")){
+						oUI.initBoard(Boolean.parseBoolean(connect[1]),changeStrHand(roomLabel[Integer.parseInt(command[1])*4+2].getText()),roomLabel[Integer.parseInt(command[1])*4+1].getText());
 						cl.screenTransition((JPanel)this, "oUI");
 					}else{
 						JOptionPane.showMessageDialog(null, "接続することができませんでした");
@@ -277,10 +277,6 @@ public class RoomUI extends JPanel implements MouseListener{
 				}
 			}
 		}
-		
-	}
-	
-	public void initRoom(String[] connect){
 		
 	}
 	
