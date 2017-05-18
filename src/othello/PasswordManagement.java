@@ -6,7 +6,6 @@ import java.security.MessageDigest;
 import java.util.Arrays;
 
 import javax.swing.JOptionPane;
-import javax.swing.Timer;
 
 public class PasswordManagement implements ActionListener {
 	Client cl;
@@ -64,13 +63,11 @@ public class PasswordManagement implements ActionListener {
 		String oldpassword=this.issueHash(oldpass);
 		//ここで更新手続き
 		//サーバを介して旧パスワードとの比較
-		Timer timer=new Timer(1000,this);
 		cl.send(new String("2,"+cl.catchUserName()+","+oldpassword+","+password));
 		do{
-			timer.setInitialDelay(5000);
 			connect=cl.waitConnection();
-		}while(connect[0]=="-");
-		if(connect[0].equals("2")){
+		}while(!connect[0].equals("14")&&!connect[0].equals("15"));
+		if(connect[0].equals("14")){
 			cl.initConnection();
 			JOptionPane.showMessageDialog(null, "パスワードを変更できました。");
 			return true;
