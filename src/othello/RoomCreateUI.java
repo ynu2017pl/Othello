@@ -119,12 +119,12 @@ public class RoomCreateUI extends JPanel implements MouseListener{
 	}
 	
 public boolean battleStart(){
-	while(!connect[0].equals("4")){
+	while(!connect[0].equals("11")){
 		connect=cl.waitConnection();
 	}
 	cl.initConnection();
 	int start;
-	start = JOptionPane.showConfirmDialog(this, connect[3]+"と戦いますか？","対戦開始",0);
+	start = JOptionPane.showConfirmDialog(this, connect[1]+"と戦いますか？","対戦開始",0);
 	if (start == JOptionPane.YES_OPTION){
 		cl.send("6,1");
 		do{
@@ -180,7 +180,7 @@ public boolean battleStart(){
 			enemyName=dText.getText();
 			*/
 			System.out.print(Integer.getInteger(connect[1]));
-			int hand=Integer.parseInt(connect[1]);
+			int hand=Integer.parseInt(connect[3]);
 			if(Boolean.parseBoolean(connect[2])) handicap*=-1;
 			oUI.initBoard(Boolean.parseBoolean(connect[2]),hand,connect[3]);
 			
