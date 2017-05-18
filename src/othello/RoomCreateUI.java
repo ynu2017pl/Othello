@@ -148,7 +148,7 @@ public boolean battleStart(){
 	public void mouseClicked(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
 		if(e.getSource()==roomCreButton){
-			
+			int che=0;
 			if(handiRadio1.isSelected()){
 				handicap=0;
 			}else{
@@ -158,14 +158,17 @@ public boolean battleStart(){
 				else if(check=="2子局")handicap=2;
 				else if(check=="3子局")handicap=3;
 				else if(check=="4子局")handicap=4;
-				if(handiRadio3.isSelected()) handicap*=-1;
+				if(handiRadio3.isSelected()) {
+					handicap*=-1;
+				}
 			}
-			
+			if(aikoRadio2.isSelected())che=1;
+			cl.initConnection();
 			//ここで通信待機、敵の名前やら先手後手情報が来るまで待つ
 			if(!aikoText.getText().equals("")){
-				cl.send("4,"+handicap+","+aikoRadio1.isSelected()+","+aikoText.getText());
+				cl.send("4,"+handicap+","+che+","+aikoText.getText());
 			}else{
-				cl.send("4,"+handicap+","+aikoRadio1.isSelected()+",名称不明");
+				cl.send("4,"+handicap+","+che+",名称不明");
 			}
 			connect=cl.waitConnection();
 			while(true){
@@ -181,7 +184,9 @@ public boolean battleStart(){
 			*/
 			System.out.print(Integer.getInteger(connect[1]));
 			int hand=Integer.parseInt(connect[3]);
-			if(Boolean.parseBoolean(check[1])) handicap*=-1;
+			if(Boolean.parseBoolean(check[1])){
+				handicap*=-1;
+			}
 			oUI.initBoard(Boolean.parseBoolean(check[1]),hand,connect[1]);
 			
 			cl.screenTransition((JPanel)this, "oUI");

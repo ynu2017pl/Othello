@@ -168,7 +168,7 @@ public class RoomUI extends JPanel implements MouseListener{
 				roomButton[i].setVisible(true);
 			}
 			int con,ai=0,count=1;
-			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=0;
+			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=6;
 			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
 			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
 			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
@@ -196,7 +196,7 @@ public class RoomUI extends JPanel implements MouseListener{
 				roomButton[i].setVisible(true);
 			}
 			int con,ai=0,count=2;
-			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=0;
+			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=6;
 			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
 			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
 			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
@@ -224,7 +224,7 @@ public class RoomUI extends JPanel implements MouseListener{
 				roomButton[i].setVisible(true);
 			}
 			int con,ai=0,count=3;
-			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=0;
+			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=6;
 			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
 			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
 			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
@@ -252,7 +252,7 @@ public class RoomUI extends JPanel implements MouseListener{
 				roomButton[i].setVisible(true);
 			}
 			int con,ai=0,count=4;
-			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=0;
+			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=6;
 			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
 			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
 			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
@@ -280,7 +280,7 @@ public class RoomUI extends JPanel implements MouseListener{
 				roomButton[i].setVisible(true);
 			}
 			int con,ai=0,count=5;
-			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=0;
+			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=6;
 			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
 			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
 			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
@@ -308,7 +308,7 @@ public class RoomUI extends JPanel implements MouseListener{
 				roomButton[i].setVisible(true);
 			}
 			int con,ai=0,count=6;
-			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=0;
+			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=6;
 			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
 			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
 			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
@@ -336,7 +336,7 @@ public class RoomUI extends JPanel implements MouseListener{
 				roomButton[i].setVisible(true);
 			}
 			int con,ai=0,count=7;
-			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=0;
+			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=6;
 			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
 			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
 			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
@@ -360,7 +360,7 @@ public class RoomUI extends JPanel implements MouseListener{
 			int con,ai=0,count=0;
 			while(rb[count].isSelected()) count++;
 			count++;
-			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=0;
+			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=6;
 			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
 			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
 			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
