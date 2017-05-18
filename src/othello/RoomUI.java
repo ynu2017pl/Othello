@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 public class RoomUI extends JPanel implements MouseListener{
 	Client cl;
 	OthelloUI oUI;
-	private String[] connect,aikoLabel;
+	private String[] connect,aikoLabel,check;
 	private JButton rCreate,rule,passChange,renew,exitButton,roomButton[];
 	private JLabel title,roomLabel[];
 	private JComboBox<String> condiBox;
@@ -400,13 +400,21 @@ public class RoomUI extends JPanel implements MouseListener{
 					}else{
 						cl.send("5,"+command[0]);
 						connect=cl.waitConnection();
-						while(!connect[0].equals("14")&&!connect[0].equals("15")){
+						while(!connect[0].equals("12")&&!connect[0].equals("15")){
 							cl.initConnection();
 							connect=cl.waitConnection();
 						}
-						if(connect[0].equals("14")){
-							oUI.initBoard(Boolean.parseBoolean(connect[1]),changeStrHand(roomLabel[Integer.parseInt(command[1])*4+2].getText()),roomLabel[Integer.parseInt(command[1])*4+1].getText());
-							cl.screenTransition((JPanel)this, "oUI");
+						if(connect[0].equals("12")){
+							check=cl.waitConnection();
+							while(!check[0].equals("14")&&!connect[0].equals("15")){
+								cl.initConnection();
+								check=cl.waitConnection();
+							}
+							if(check[0].equals("14")){
+								int han=Integer.parseInt(connect[3])*(-1);
+								oUI.initBoard(Boolean.parseBoolean(connect[2]),han,connect[1]);
+								cl.screenTransition((JPanel)this, "oUI");
+							}
 						}else{
 							JOptionPane.showMessageDialog(null, "接続することができませんでした");
 						}

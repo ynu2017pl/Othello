@@ -129,8 +129,8 @@ public boolean battleStart(){
 		cl.send("6,1");
 		do{
 			check=cl.waitConnection();
-		}while(!check[0].equals("12")&&!check[0].equals("15"));
-		if(check[1].equals("12")) {
+		}while(!check[0].equals("14")&&!check[0].equals("15"));
+		if(check[1].equals("14")) {
 			cl.initConnection();
 			return true;
 		}else{
@@ -187,7 +187,7 @@ public boolean battleStart(){
 			if(Boolean.parseBoolean(check[1])){
 				handicap*=-1;
 			}
-			oUI.initBoard(Boolean.parseBoolean(check[1]),hand,connect[1]);
+			oUI.initBoard(Boolean.parseBoolean(connect[2]),hand,connect[1]);
 			
 			cl.screenTransition((JPanel)this, "oUI");
 		}else if(e.getSource()==cancel){
