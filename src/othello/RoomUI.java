@@ -167,12 +167,54 @@ public class RoomUI extends JPanel implements MouseListener{
 			for(int i=0;i<8;i++){
 				roomButton[i].setVisible(true);
 			}
+			int con,ai=0,count=1;
+			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=0;
+			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
+			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
+			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
+			else if(condiBox.getSelectedItem().equals("ハンデ:3子局")) con=3;
+			else if(condiBox.getSelectedItem().equals("ハンデ:4子局")) con=4;
+			else {
+				con=0;
+				ai=1;
+			}
+			cl.send("3,"+count+","+con+","+ai);
+			connect=cl.waitConnection();
+			while(!connect[0].equals("15")&&!connect[0].equals("11")){
+				cl.initConnection();
+				connect=cl.waitConnection();
+			}
+			cl.initConnection();
+			for(int i=(count-1)*8;i<connect.length/6+(count-1)*8;i++){
+				roomInfoButton(connect[i*6+2],connect[i*6+1],connect[i*6+3],connect[i*6+4],connect[i*6+5],i);
+			}
 		}else if(e.getSource()==rb[1]){
 			for(int i=0;i<56;i++){
 				roomButton[i].setVisible(false);
 			}
 			for(int i=8;i<16;i++){
 				roomButton[i].setVisible(true);
+			}
+			int con,ai=0,count=2;
+			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=0;
+			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
+			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
+			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
+			else if(condiBox.getSelectedItem().equals("ハンデ:3子局")) con=3;
+			else if(condiBox.getSelectedItem().equals("ハンデ:4子局")) con=4;
+			else {
+				con=0;
+				ai=1;
+			}
+			cl.send("3,"+count+","+con+","+ai);
+			connect=cl.waitConnection();
+			while(!connect[0].equals("15")&&!connect[0].equals("11")){
+				cl.initConnection();
+				connect=cl.waitConnection();
+			}
+			cl.initConnection();
+			for(int i=(count-1)*8;i<connect.length/6+(count-1)*8;i++){
+				roomInfoButton(connect[i*6+2],connect[i*6+1],connect[i*6+3],connect[i*6+4],connect[i*6+5],i);
 			}
 		}else if(e.getSource()==rb[2]){
 			for(int i=0;i<56;i++){
@@ -181,12 +223,54 @@ public class RoomUI extends JPanel implements MouseListener{
 			for(int i=16;i<24;i++){
 				roomButton[i].setVisible(true);
 			}
+			int con,ai=0,count=3;
+			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=0;
+			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
+			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
+			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
+			else if(condiBox.getSelectedItem().equals("ハンデ:3子局")) con=3;
+			else if(condiBox.getSelectedItem().equals("ハンデ:4子局")) con=4;
+			else {
+				con=0;
+				ai=1;
+			}
+			cl.send("3,"+count+","+con+","+ai);
+			connect=cl.waitConnection();
+			while(!connect[0].equals("15")&&!connect[0].equals("11")){
+				cl.initConnection();
+				connect=cl.waitConnection();
+			}
+			cl.initConnection();
+			for(int i=(count-1)*8;i<connect.length/6+(count-1)*8;i++){
+				roomInfoButton(connect[i*6+2],connect[i*6+1],connect[i*6+3],connect[i*6+4],connect[i*6+5],i);
+			}
 		}else if(e.getSource()==rb[3]){
 			for(int i=0;i<56;i++){
 				roomButton[i].setVisible(false);
 			}
 			for(int i=24;i<32;i++){
 				roomButton[i].setVisible(true);
+			}
+			int con,ai=0,count=4;
+			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=0;
+			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
+			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
+			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
+			else if(condiBox.getSelectedItem().equals("ハンデ:3子局")) con=3;
+			else if(condiBox.getSelectedItem().equals("ハンデ:4子局")) con=4;
+			else {
+				con=0;
+				ai=1;
+			}
+			cl.send("3,"+count+","+con+","+ai);
+			connect=cl.waitConnection();
+			while(!connect[0].equals("15")&&!connect[0].equals("11")){
+				cl.initConnection();
+				connect=cl.waitConnection();
+			}
+			cl.initConnection();
+			for(int i=(count-1)*8;i<connect.length/6+(count-1)*8;i++){
+				roomInfoButton(connect[i*6+2],connect[i*6+1],connect[i*6+3],connect[i*6+4],connect[i*6+5],i);
 			}
 		}else if(e.getSource()==rb[4]){
 			for(int i=0;i<56;i++){
@@ -195,12 +279,54 @@ public class RoomUI extends JPanel implements MouseListener{
 			for(int i=32;i<40;i++){
 				roomButton[i].setVisible(true);
 			}
+			int con,ai=0,count=5;
+			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=0;
+			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
+			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
+			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
+			else if(condiBox.getSelectedItem().equals("ハンデ:3子局")) con=3;
+			else if(condiBox.getSelectedItem().equals("ハンデ:4子局")) con=4;
+			else {
+				con=0;
+				ai=1;
+			}
+			cl.send("3,"+count+","+con+","+ai);
+			connect=cl.waitConnection();
+			while(!connect[0].equals("15")&&!connect[0].equals("11")){
+				cl.initConnection();
+				connect=cl.waitConnection();
+			}
+			cl.initConnection();
+			for(int i=(count-1)*8;i<connect.length/6+(count-1)*8;i++){
+				roomInfoButton(connect[i*6+2],connect[i*6+1],connect[i*6+3],connect[i*6+4],connect[i*6+5],i);
+			}
 		}else if(e.getSource()==rb[5]){
 			for(int i=0;i<56;i++){
 				roomButton[i].setVisible(false);
 			}
 			for(int i=40;i<48;i++){
 				roomButton[i].setVisible(true);
+			}
+			int con,ai=0,count=6;
+			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=0;
+			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
+			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
+			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
+			else if(condiBox.getSelectedItem().equals("ハンデ:3子局")) con=3;
+			else if(condiBox.getSelectedItem().equals("ハンデ:4子局")) con=4;
+			else {
+				con=0;
+				ai=1;
+			}
+			cl.send("3,"+count+","+con+","+ai);
+			connect=cl.waitConnection();
+			while(!connect[0].equals("15")&&!connect[0].equals("11")){
+				cl.initConnection();
+				connect=cl.waitConnection();
+			}
+			cl.initConnection();
+			for(int i=(count-1)*8;i<connect.length/6+(count-1)*8;i++){
+				roomInfoButton(connect[i*6+2],connect[i*6+1],connect[i*6+3],connect[i*6+4],connect[i*6+5],i);
 			}
 		}else if(e.getSource()==rb[6]){
 			for(int i=0;i<56;i++){
@@ -209,8 +335,29 @@ public class RoomUI extends JPanel implements MouseListener{
 			for(int i=48;i<56;i++){
 				roomButton[i].setVisible(true);
 			}
+			int con,ai=0,count=7;
+			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=0;
+			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
+			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
+			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
+			else if(condiBox.getSelectedItem().equals("ハンデ:3子局")) con=3;
+			else if(condiBox.getSelectedItem().equals("ハンデ:4子局")) con=4;
+			else {
+				con=0;
+				ai=1;
+			}
+			cl.send("3,"+count+","+con+","+ai);
+			connect=cl.waitConnection();
+			while(!connect[0].equals("15")&&!connect[0].equals("11")){
+				cl.initConnection();
+				connect=cl.waitConnection();
+			}
+			cl.initConnection();
+			for(int i=(count-1)*8;i<connect.length/6+(count-1)*8;i++){
+				roomInfoButton(connect[i*6+2],connect[i*6+1],connect[i*6+3],connect[i*6+4],connect[i*6+5],i);
+			}
 		}else if(e.getSource()==renew){
-			int con,count=0;
+			int con,ai=0,count=0;
 			while(rb[count].isSelected()) count++;
 			count++;
 			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=0;
@@ -219,8 +366,11 @@ public class RoomUI extends JPanel implements MouseListener{
 			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
 			else if(condiBox.getSelectedItem().equals("ハンデ:3子局")) con=3;
 			else if(condiBox.getSelectedItem().equals("ハンデ:4子局")) con=4;
-			else con=6;
-			cl.send("3,"+count+","+con);
+			else {
+				con=0;
+				ai=1;
+			}
+			cl.send("3,"+count+","+con+","+ai);
 			connect=cl.waitConnection();
 			while(!connect[0].equals("15")&&!connect[0].equals("11")){
 				cl.initConnection();

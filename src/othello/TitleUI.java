@@ -74,6 +74,13 @@ public class TitleUI extends JPanel implements MouseListener,ActionListener{
 					cl.initConnection();
 					JOptionPane.showMessageDialog(null, "ログインできました。\nユーザ名："+name.getText());
 					cl.writeUserName(name.getText());
+					cl.send("3,1,0,0");
+					do{
+						connect=cl.waitConnection();
+					}while(!connect[0].equals("11") && !connect[0].equals("15"));
+					for(int i=0;i<connect.length/6;i++){
+						rUI.roomInfoButton(connect[i*6+2],connect[i*6+1],connect[i*6+3],connect[i*6+4],connect[i*6+5],i);
+					}
 					cl.screenTransition((JPanel)this, "rUI");
 				}else{
 					cl.initConnection();
@@ -89,7 +96,7 @@ public class TitleUI extends JPanel implements MouseListener,ActionListener{
 					cl.initConnection();
 					JOptionPane.showMessageDialog(null, "登録できました\n入力されたデータ\nユーザ名："+name.getText());
 					cl.writeUserName(name.getText());
-					cl.send("3,1,0");
+					cl.send("3,1,0,0");
 					do{
 						connect=cl.waitConnection();
 					}while(!connect[0].equals("11") && !connect[0].equals("15"));
