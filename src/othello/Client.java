@@ -19,7 +19,7 @@ public class Client extends JFrame implements ActionListener{
 	public Client(){
 		connect=new String[1];
 		connect[0]="-";
-		cs.connectServer("localhost", 10001,this);
+		cs.connectServer("localhost", 10000,this);
 		this.add(oUI);
 		oUI.setVisible(false);
 		this.add(rcUI);

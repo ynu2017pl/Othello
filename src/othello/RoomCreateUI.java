@@ -119,7 +119,7 @@ public class RoomCreateUI extends JPanel implements MouseListener{
 	}
 	
 public boolean battleStart(){
-	while(!connect[0].equals("11")){
+	while(!connect[0].equals("12")){
 		connect=cl.waitConnection();
 	}
 	cl.initConnection();
