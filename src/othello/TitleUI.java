@@ -93,8 +93,8 @@ public class TitleUI extends JPanel implements MouseListener,ActionListener{
 					do{
 						connect=cl.waitConnection();
 					}while(!connect[0].equals("11") && !connect[0].equals("15"));
-					for(int i=0;i<connect.length/5;i++){
-						rUI.roomInfoButton(connect[i*5+2],connect[i*5+1],connect[i*5+3],connect[i*5+4],i);
+					for(int i=0;i<connect.length/6;i++){
+						rUI.roomInfoButton(connect[i*6+2],connect[i*6+1],connect[i*6+3],connect[i*6+4],connect[i*6+5],i);
 					}
 					cl.screenTransition((JPanel)this, "rUI");
 				}else{
