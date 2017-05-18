@@ -14,7 +14,7 @@ public class Client extends JFrame implements ActionListener{
 	OthelloUI oUI=new OthelloUI(this);
 	RoomUI rUI=new RoomUI(this,oUI);
 	RoomCreateUI rcUI=new RoomCreateUI(this,oUI);
-	TitleUI tUI=new TitleUI(this);
+	TitleUI tUI=new TitleUI(this,rUI);
 	PasswordChangeUI pUI=new PasswordChangeUI(this);
 	public Client(){
 		connect=new String[1];

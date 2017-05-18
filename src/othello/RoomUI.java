@@ -117,21 +117,25 @@ public class RoomUI extends JPanel implements MouseListener{
 	}
 	
 	public void roomInfoButton(String no,String teki,String hande,String aikotoba,int noButton){
-		roomButton[noButton].setActionCommand(no+","+noButton);
-		roomLabel[noButton*4+1].setText(teki);
-		if(hande.equals("0"))roomLabel[noButton*4+2].setText("ハンデ：なし");
-		if(hande.equals("1"))roomLabel[noButton*4+2].setText("作成者：1子局");
-		if(hande.equals("2"))roomLabel[noButton*4+2].setText("作成者：2子局");
-		if(hande.equals("3"))roomLabel[noButton*4+2].setText("作成者：3子局");
-		if(hande.equals("4"))roomLabel[noButton*4+2].setText("作成者：4子局");
-		if(hande.equals("5"))roomLabel[noButton*4+2].setText("作成者：引き分け勝ち");
-		if(hande.equals("-1"))roomLabel[noButton*4+2].setText("入室者：1子局");
-		if(hande.equals("-2"))roomLabel[noButton*4+2].setText("入室者：2子局");
-		if(hande.equals("-3"))roomLabel[noButton*4+2].setText("入室者：3子局");
-		if(hande.equals("-4"))roomLabel[noButton*4+2].setText("入室者：4子局");
-		if(hande.equals("-5"))roomLabel[noButton*4+2].setText("入室者：引き分け勝ち");
-		if(aikotoba.equals("0"))roomLabel[noButton*4+3].setText("合言葉：なし");
-		else roomLabel[noButton*4+3].setText("合言葉：あり");
+		try{
+			roomButton[noButton].setActionCommand(no+","+noButton);
+			roomLabel[noButton*4+1].setText(teki);
+			if(hande.equals("0"))roomLabel[noButton*4+2].setText("ハンデ：なし");
+			if(hande.equals("1"))roomLabel[noButton*4+2].setText("作成者：1子局");
+			if(hande.equals("2"))roomLabel[noButton*4+2].setText("作成者：2子局");
+			if(hande.equals("3"))roomLabel[noButton*4+2].setText("作成者：3子局");
+			if(hande.equals("4"))roomLabel[noButton*4+2].setText("作成者：4子局");
+			if(hande.equals("5"))roomLabel[noButton*4+2].setText("作成者：引き分け勝ち");
+			if(hande.equals("-1"))roomLabel[noButton*4+2].setText("入室者：1子局");
+			if(hande.equals("-2"))roomLabel[noButton*4+2].setText("入室者：2子局");
+			if(hande.equals("-3"))roomLabel[noButton*4+2].setText("入室者：3子局");
+			if(hande.equals("-4"))roomLabel[noButton*4+2].setText("入室者：4子局");
+			if(hande.equals("-5"))roomLabel[noButton*4+2].setText("入室者：引き分け勝ち");
+			if(aikotoba.equals("0"))roomLabel[noButton*4+3].setText("合言葉：なし");
+			else roomLabel[noButton*4+3].setText("合言葉：あり");
+		}catch(NullPointerException e){
+			
+		}
 	}
 	
 	@Override
@@ -242,6 +246,10 @@ public class RoomUI extends JPanel implements MouseListener{
 				cl.screenTransition((JPanel)this, "oUI");
 			}
 		}
+		
+	}
+	
+	public void initRoom(String[] connect){
 		
 	}
 	

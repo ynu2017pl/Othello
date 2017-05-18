@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.Timer;
 
 public class TitleUI extends JPanel implements MouseListener,ActionListener{
 	Client cl;
@@ -21,8 +20,10 @@ public class TitleUI extends JPanel implements MouseListener,ActionListener{
 	private JLabel title,passLabel,nameLabel;
 	private JButton login,anew;
 	private String[] connect;
-	public TitleUI(Client c){
+	RoomUI rUI;
+	public TitleUI(Client c,RoomUI r){
 		cl=c;
+		rUI=r;
 		this.setSize(700, 550);
 		this.setName("tUI");
 		this.setLayout(null);
@@ -61,17 +62,15 @@ public class TitleUI extends JPanel implements MouseListener,ActionListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-		Timer timer=new Timer(1000,this);
 		PasswordManagement pm=new PasswordManagement(cl);
 		if (pm.checkAvailable(pass.getPassword())){
 			String password = pm.issueHash(pass.getPassword());
 			if(e.getSource()==login){
 				cl.send(new String("1,"+name.getText()+","+password));
 				do{
-					timer.setInitialDelay(5000);
 					connect=cl.waitConnection();
-				}while(connect[0]=="-");
-				if(connect[0].equals("1")){
+				}while(!connect[0].equals("14") && !connect[0].equals("15"));
+				if(connect[0].equals("14")){
 					cl.initConnection();
 					JOptionPane.showMessageDialog(null, "ログインできました。\nユーザ名："+name.getText());
 					cl.writeUserName(name.getText());
@@ -84,13 +83,19 @@ public class TitleUI extends JPanel implements MouseListener,ActionListener{
 			else if(e.getSource()==anew){
 				cl.send(new String("0,"+name.getText()+","+password));
 				do{
-					timer.setInitialDelay(5000);
 					connect=cl.waitConnection();
-				}while(connect[0]=="-");
-				System.out.print("入った"+connect[0]+"うん");
+				}while(!connect[0].equals("14") && !connect[0].equals("15"));
 				if(connect[0].equals("14")){
 					cl.initConnection();
 					JOptionPane.showMessageDialog(null, "登録できました\n入力されたデータ\nユーザ名："+name.getText());
+					cl.writeUserName(name.getText());
+					cl.send("3,1,0");
+					do{
+						connect=cl.waitConnection();
+					}while(!connect[0].equals("11") && !connect[0].equals("15"));
+					for(int i=0;i<connect.length/5;i++){
+						rUI.roomInfoButton(connect[i*5+2],connect[i*5+1],connect[i*5+3],connect[i*5+4],i);
+					}
 					cl.screenTransition((JPanel)this, "rUI");
 				}else{
 					cl.initConnection();
