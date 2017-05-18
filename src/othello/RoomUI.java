@@ -80,9 +80,9 @@ public class RoomUI extends JPanel implements MouseListener{
 			if(i>7) roomLabel[i*4+1].setVisible(false);
 			roomLabel[i*4+2]=new JLabel("ハンデ");
 			this.add(roomLabel[i*4+2]);
-			roomLabel[i*4+2].setBounds(25+(i%4)*160,125+(i/4-i/8*2)*160,150,20);
+			roomLabel[i*4+2].setBounds(15+(i%4)*160,125+(i/4-i/8*2)*160,170,20);
 			roomLabel[i*4+2].addMouseListener(this);
-			roomLabel[i*4+2].setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
+			roomLabel[i*4+2].setFont(new Font("ＭＳ ゴシック", Font.BOLD, 14));
 			roomLabel[i*4+2].setHorizontalAlignment(JLabel.CENTER);
 			if(i>7) roomLabel[i*4+2].setVisible(false);
 			roomLabel[i*4+3]=new JLabel("合言葉");
@@ -99,7 +99,7 @@ public class RoomUI extends JPanel implements MouseListener{
 			roomButton[i].setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
 			roomButton[i].setVerticalAlignment(JLabel.CENTER);
 			if(i>7) roomButton[i].setVisible(false);
-			roomButton[i].setActionCommand("-1");
+			roomButton[i].setActionCommand("-1,"+i);
 		}
 		roomButton[0].setText("入室");
 		rb=new RoundButton[7];
@@ -115,6 +115,25 @@ public class RoomUI extends JPanel implements MouseListener{
 		rb[0].isSelected();
 		
 	}
+	
+	public void roomInfoButton(String no,String teki,String hande,String aikotoba,int noButton){
+		roomButton[noButton].setActionCommand(no+","+noButton);
+		roomLabel[noButton*4+1].setText(teki);
+		if(hande.equals("0"))roomLabel[noButton*4+2].setText("ハンデ：なし");
+		if(hande.equals("1"))roomLabel[noButton*4+2].setText("作成者：1子局");
+		if(hande.equals("2"))roomLabel[noButton*4+2].setText("作成者：2子局");
+		if(hande.equals("3"))roomLabel[noButton*4+2].setText("作成者：3子局");
+		if(hande.equals("4"))roomLabel[noButton*4+2].setText("作成者：4子局");
+		if(hande.equals("5"))roomLabel[noButton*4+2].setText("作成者：引き分け勝ち");
+		if(hande.equals("-1"))roomLabel[noButton*4+2].setText("入室者：1子局");
+		if(hande.equals("-2"))roomLabel[noButton*4+2].setText("入室者：2子局");
+		if(hande.equals("-3"))roomLabel[noButton*4+2].setText("入室者：3子局");
+		if(hande.equals("-4"))roomLabel[noButton*4+2].setText("入室者：4子局");
+		if(hande.equals("-5"))roomLabel[noButton*4+2].setText("入室者：引き分け勝ち");
+		if(aikotoba.equals("0"))roomLabel[noButton*4+3].setText("合言葉：なし");
+		else roomLabel[noButton*4+3].setText("合言葉：あり");
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
@@ -201,39 +220,57 @@ public class RoomUI extends JPanel implements MouseListener{
 			cl.initConnection();
 			for(int i=0;i<connect.length/3;i++){
 				roomLabel[i+1].setText("仮");//暫定
-				if(connect[2].equals("0")) {
-					roomLabel[i+2].setText("ハンデ:なし");
-					roomLabel[i+3].setText("合言葉：なし");
-				}else if(connect[2].equals("1")) {
-					roomLabel[i+2].setText("ハンデ:1子局");
-					roomLabel[i+3].setText("合言葉：なし");
-				}else if(connect[2].equals("2")) {
-					roomLabel[i+2].setText("ハンデ:2子局");
-					roomLabel[i+3].setText("合言葉：なし");
-				}else if(connect[2].equals("3")) {
-					roomLabel[i+2].setText("ハンデ:3子局");
-					roomLabel[i+3].setText("合言葉：なし");
-				}else if(connect[2].equals("4")) {
-					roomLabel[i+2].setText("ハンデ:4子局");
-					roomLabel[i+3].setText("合言葉：なし");
-				}else if(connect[2].equals("5")) {
-					roomLabel[i+2].setText("ハンデ：引き分け勝ち");
-					roomLabel[i+3].setText("合言葉：なし");
-				}else{
-					roomLabel[i+2].setText("ハンデ：なし");
-					roomLabel[i+3].setText("合言葉：あり");
-				}
-				roomButton[i].setActionCommand(connect[1]);
+				String clabel=changeStrHand(Integer.parseInt(connect[2]));
+				roomLabel[i+2].setText(clabel);
+				if(Integer.parseInt(connect[2])==6)roomLabel[i+3].setText("合言葉：あり");
+				else roomLabel[i+3].setText("合言葉：なし");
+				roomButton[i].setActionCommand(connect[1]+","+i);
+				roomInfoButton("4","ジョンソン","5","1",2);
 			}
 		}else{
 			JButton theButton = (JButton)e.getComponent();//クリックしたオブジェクトを得る．キャストを忘れずに
-			String command = theButton.getActionCommand();//ボタンの名前を取り出す
-			if (!command.equals("-1")){
-				
+			String[] command = theButton.getActionCommand().split(",",0);//ボタンの名前を取り出す
+			if (!command[0].equals("-1")){
+				cl.send("5,"+command[0]);
+				connect=cl.waitConnection();
+				while(!connect[0].equals("5")&&!connect[0].equals("12")){
+					cl.initConnection();
+					connect=cl.waitConnection();
+				}
+				System.out.println(roomLabel[Integer.parseInt(command[1])*4+2].getText());
+				oUI.initBoard(Boolean.parseBoolean("true"),changeStrHand(roomLabel[Integer.parseInt(command[1])*4+2].getText()),roomLabel[Integer.parseInt(command[1])*4+1].getText());
 				cl.screenTransition((JPanel)this, "oUI");
 			}
 		}
 		
+	}
+	
+	public String changeStrHand(int ha){
+		if(ha==0)return "ハンデ:なし";
+		else if(ha==5)return "作成者：引き分け勝ち";
+		else if(ha==1)return "作成者：1子局";
+		else if(ha==2)return "作成者：2子局";
+		else if(ha==3)return "作成者：3子局";
+		else if(ha==4)return "作成者：4子局";
+		else if(ha==-5)return "入室者：引き分け勝ち";
+		else if(ha==-1)return "入室者：1子局";
+		else if(ha==-2)return "入室者：2子局";
+		else if(ha==-3)return "入室者：3子局";
+		else return "入室者：4子局";
+	}
+	
+	public int changeStrHand(String ha){
+		if(ha.equals("ハンデ:なし")) return 0;
+		else if(ha.equals("作成者：引き分け勝ち")) return 5;
+		else if(ha.equals("作成者：1子局")) return 1;
+		else if(ha.equals("作成者：2子局")) return 2;
+		else if(ha.equals("作成者：3子局")) return 3;
+		else if(ha.equals("作成者：4子局")) return 4;
+		else if(ha.equals("入室者：引き分け勝ち")) return -5;
+		else if(ha.equals("入室者：1子局")) return -1;
+		else if(ha.equals("入室者：2子局")) return -2;
+		else if(ha.equals("入室者：3子局")) return -3;
+		else return -4;
 	}
 	
 	@Override

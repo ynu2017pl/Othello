@@ -83,6 +83,15 @@ public class Client extends JFrame implements ActionListener{
 		return con;
 	}
 	
+	public String[] popConnection(){
+		
+		return new String[4];
+	}
+	
+	public void pushConnection(String msg){
+		//connect.add(msg);
+	}
+	
 	public void writeUserName(String name){
 		userName=name;
 	}
