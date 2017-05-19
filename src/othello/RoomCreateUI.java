@@ -183,13 +183,17 @@ public boolean battleStart(){
 			enemyName=dText.getText();
 			*/
 			System.out.print(Integer.getInteger(connect[1]));
+			boolean init=true;
 			int hand=Integer.parseInt(connect[3]);
-			if(Boolean.parseBoolean(check[1])){
+			if(Integer.parseInt(connect[2])==0){
 				handicap*=-1;
+				init=false;
 			}
-			oUI.initBoard(Boolean.parseBoolean(connect[2]),hand,connect[1]);
-			
+			oUI.initBoard(init,hand,connect[1]);
 			cl.screenTransition((JPanel)this, "oUI");
+			if(Integer.parseInt(connect[2])==0){
+				oUI.waitEnemy();
+			}
 		}else if(e.getSource()==cancel){
 			cl.screenTransition((JPanel)this, "rUI");
 		}

@@ -298,6 +298,55 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		return false;
 	}
 	
+	public void waitEnemy(){
+		timer.stop();
+		time=0;
+		//System.out.print(Arrays.deepToString(board));
+		//othello.debugChangeInitiative();//デバッグ用
+		//initiative=!initiative;
+		updateDisp();
+		boardPoint=othello.callBoardPoint();
+		stonecount++;
+		bwPointTemp.setText("黒　　　：　　　白 更新まで"+(16-(stonecount%16)));
+		if(initiative){
+			blackPoint.setText(String.format("%+03d",boardPoint[1]));
+			if(stonecount%16==0)whitePoint.setText(String.format("%+03d",boardPoint[0]));
+		}
+		else {
+			whitePoint.setText(String.format("%+03d",boardPoint[0]));
+			if(stonecount%16==0)blackPoint.setText(String.format("%+03d",boardPoint[0]));
+		}
+		connect=cl.waitConnection();
+		while(!connect[0].equals("7")&&!connect[0].equals("8")){
+			cl.initConnection();
+			connect=cl.waitConnection();
+		}
+		if(connect[0].equals("7")){
+			if(othello.stoneDrop(Integer.parseInt(connect[1]), Integer.parseInt(connect[2]), Integer.parseInt(connect[3]))){
+				JOptionPane.showMessageDialog(null, "あなたの番です");
+				stonecount++;
+				bwPointTemp.setText("黒　　　：　　　白 更新まで"+(16-(stonecount%16)));
+				boardPoint=othello.callBoardPoint();
+				if(initiative){
+					blackPoint.setText(String.format("%+03d",boardPoint[1]));
+					if(stonecount%16==0)whitePoint.setText(String.format("%+03d",boardPoint[0]));
+				}
+				else {
+					whitePoint.setText(String.format("%+03d",boardPoint[0]));
+					if(stonecount%16==0)blackPoint.setText(String.format("%+03d",boardPoint[0]));
+				}
+			}else{
+				JOptionPane.showMessageDialog(null, "相手は置き場がなかったようです");
+			}
+			cl.initConnection();
+		}else{
+			finiFlag=checkWin();
+		}
+			//othello.debugChangeInitiative();//デバッグ用,本来なら通信
+			//initiative=!initiative;
+		
+	}
+	
 	public void mouseClicked(MouseEvent e) {
 		if(e.getSource()==rule){
 			Rule rule = new Rule();
@@ -334,6 +383,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 					else if(i==5) score=1;
 				}
 				if(othello.stoneDrop(num/8, num%8, score)){
+					hand[i]--;
 					timer.stop();
 					time=0;
 					hand[i]--;
@@ -459,6 +509,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		initiative=init;
 		handicap=handi;
 		stonecount=0;
+		finiFlag=true;
 		hand=othello.initBoard(initiative,handicap);
 		enemy.setText("対戦相手:"+enemyName);
 		boardPoint=othello.callBoardPoint();
@@ -471,6 +522,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 			for(int i=0;i<6;i++){
 				chooseStone[i].setIcon(blackIcon[i+1]);
 				chooseStone[i].setText("×"+hand[i]);
+				finiFlag=false;
 			}
 		}else{
 			showIni.setText("あなたは白です");
@@ -479,7 +531,6 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 				chooseStone[i].setText("×"+hand[i]);
 			}
 		}
-		finiFlag=false;
 		updateDisp();
 		time=0;
 		timer.start();
