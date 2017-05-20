@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -23,6 +24,7 @@ public class RoomUI extends JPanel implements MouseListener{
 	private JComboBox<String> condiBox;
 	private RoundButton rb[];
 	private ButtonGroup rbGp;
+	private ImageIcon pageIcon[];
 	private int page;
 	public RoomUI(Client c,OthelloUI ou){
 		cl=c;
@@ -109,12 +111,19 @@ public class RoomUI extends JPanel implements MouseListener{
 			
 		}
 		roomButton[0].setText("入室");
+		pageIcon = new ImageIcon[7];
+		pageIcon[0] = new ImageIcon("page1.png");
+		pageIcon[1] = new ImageIcon("page2.png");
+		pageIcon[2] = new ImageIcon("page3.png");
+		pageIcon[3] = new ImageIcon("page4.png");
+		pageIcon[4] = new ImageIcon("page5.png");
+		pageIcon[5] = new ImageIcon("page6.png");
+		pageIcon[6] = new ImageIcon("page7.png");
 		rb=new RoundButton[7];
 		rbGp=new ButtonGroup();
 		for(int i=0;i<7;i++){
-			rb[i]=new RoundButton(Integer.toString(i+1));
+			rb[i]=new RoundButton(pageIcon[i]);
 			this.add(rb[i]);
-			rb[i].setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
 			rb[i].setBounds(100+i*70,380,50,50);
 			rb[i].addMouseListener(this);
 			rbGp.add(rb[i]);

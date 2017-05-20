@@ -3,9 +3,11 @@ package othello;
 import java.awt.Dimension;
 import java.awt.geom.Ellipse2D;
 
+import javax.swing.Icon;
+
 class RoundButton extends RoundedCornerButton {
-	  public RoundButton(String text) {
-	    super(text);
+	  public RoundButton(Icon icon) {
+	    super(icon);
 	    setFocusPainted(false);
 	    initShape();
 	  }
