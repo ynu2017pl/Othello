@@ -303,7 +303,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 	
 	public boolean waitpass(){
 		connect=cl.waitConnection();
-		while(!connect[0].equals("7")&&!connect[0].equals("8")){
+		while(!connect[0].equals("7")&&!connect[0].equals("8")&&!connect[0].equals("13")){
 			cl.initConnection();
 			connect=cl.waitConnection();
 		}
@@ -339,10 +339,19 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 				JOptionPane.showMessageDialog(null, "相手は置き場がなかったようです");
 				return false;
 			}
+		}else if(connect[0].equals("8")){
+			if(connect[1].equals("-6")){
+				JOptionPane.showMessageDialog(null, "相手は敗北を認めました。あなたの勝ちです。");
+				cl.screenTransition((JPanel)this, "rUI");
+			}else{
+				othello.stoneDrop(Integer.parseInt(connect[1]), Integer.parseInt(connect[2]), Integer.parseInt(connect[3]));
+				boardPoint=othello.callBoardPoint();
+				finiFlag=checkWin();
+			}
+			return false;
 		}else{
-			othello.stoneDrop(Integer.parseInt(connect[1]), Integer.parseInt(connect[2]), Integer.parseInt(connect[3]));
-			boardPoint=othello.callBoardPoint();
-			finiFlag=checkWin();
+			JOptionPane.showMessageDialog(null, "切断が確認されました。あなたの勝ちです。");
+			cl.screenTransition((JPanel)this, "rUI");
 			return false;
 		}
 	}
@@ -366,7 +375,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		}
 		updateDisp();
 		connect=cl.waitConnection();
-		while(!connect[0].equals("7")&&!connect[0].equals("8")){
+		while(!connect[0].equals("7")&&!connect[0].equals("8")&&!connect[0].equals("13")){
 			cl.initConnection();
 			connect=cl.waitConnection();
 		}
@@ -393,10 +402,18 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 			}
 			cl.initConnection();
 			finiFlag=false;
+		}else if(connect[0].equals("8")){
+			if(connect[1].equals("-6")){
+				JOptionPane.showMessageDialog(null, "相手は敗北を認めました。あなたの勝ちです。");
+				cl.screenTransition((JPanel)this, "rUI");
+			}else{
+				othello.stoneDrop(Integer.parseInt(connect[1]), Integer.parseInt(connect[2]), Integer.parseInt(connect[3]));
+				boardPoint=othello.callBoardPoint();
+				finiFlag=checkWin();
+			}
 		}else{
-			othello.stoneDrop(Integer.parseInt(connect[1]), Integer.parseInt(connect[2]), Integer.parseInt(connect[3]));
-			boardPoint=othello.callBoardPoint();
-			finiFlag=checkWin();
+			JOptionPane.showMessageDialog(null, "切断が確認されました。あなたの勝ちです。");
+			cl.screenTransition((JPanel)this, "rUI");
 		}
 			//othello.debugChangeInitiative();//デバッグ用,本来なら通信
 			//initiative=!initiative;
@@ -411,6 +428,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		}else if(e.getSource()==giveup){
 			int finish = JOptionPane.showConfirmDialog(this, "本当に投了しますか？","投了",0);
 			if (finish == JOptionPane.YES_OPTION){
+				cl.send("8,-6,-6,-6");
 				cl.screenTransition((JPanel)this, "rUI");
 			}
 		}else{
@@ -501,7 +519,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 						JOptionPane.showMessageDialog(null, "相手の手番です。");
 						cl.send("7,"+num/8+","+num%8+","+score);
 						connect=cl.waitConnection();
-						while(!connect[0].equals("7")&&!connect[0].equals("8")){
+						while(!connect[0].equals("7")&&!connect[0].equals("8")&&!connect[0].equals("13")){
 							cl.initConnection();
 							connect=cl.waitConnection();
 						}
@@ -541,10 +559,18 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 								JOptionPane.showMessageDialog(null, "相手は置き場がなかったようです");
 							}
 							cl.initConnection();
+						}else if(connect[0].equals("8")){
+							if(connect[1].equals("-6")){
+								JOptionPane.showMessageDialog(null, "相手は敗北を認めました。あなたの勝ちです。");
+								cl.screenTransition((JPanel)this, "rUI");
+							}else{
+								othello.stoneDrop(Integer.parseInt(connect[1]), Integer.parseInt(connect[2]), Integer.parseInt(connect[3]));
+								boardPoint=othello.callBoardPoint();
+								finiFlag=checkWin();
+							}
 						}else{
-							othello.stoneDrop(Integer.parseInt(connect[1]), Integer.parseInt(connect[2]), Integer.parseInt(connect[3]));
-							boardPoint=othello.callBoardPoint();
-							finiFlag=checkWin();
+							JOptionPane.showMessageDialog(null, "切断が確認されました。あなたの勝ちです。");
+							cl.screenTransition((JPanel)this, "rUI");
 						}
 						
 					}
@@ -568,12 +594,8 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		showTime.setText(min+":"+sec);
 		if(time>299){
 			timer.stop();
-			int finish = JOptionPane.showConfirmDialog(this, "時間切れです。再戦しますか？","再戦",0);
-			if (finish == JOptionPane.YES_OPTION){
-				initBoard(initiative,handicap,enemyName);
-			}else{
-				cl.screenTransition((JPanel)this, "rUI");
-			}
+			JOptionPane.showMessageDialog(null, "時間切れです。ルーム検索に戻ります。");
+			cl.screenTransition((JPanel)this, "rUI");
 		}else{
 			time++;
 		}
