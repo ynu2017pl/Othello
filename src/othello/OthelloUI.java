@@ -273,14 +273,14 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 			cl.send("9,1");
 			do{
 				connect=cl.waitConnection();
-			}while(!connect[0].equals("9") && !connect[0].equals("13"));
-			if(connect[0].equals("9")){
-				if(!connect[1].equals("1")){
+			}while(!connect[0].equals("12") && !connect[0].equals("13")&&!connect[0].equals("15"));
+			if(connect[0].equals("12")){
+				/*if(connect[1].equals("1")){
 					JOptionPane.showMessageDialog(null, "相手に再戦を拒否されました。ルーム検索画面に戻ります。");
 					cl.screenTransition((JPanel)this, "rUI");
 					return true;
 				}
-				cl.initConnection();
+				cl.initConnection();*/
 			}else{
 				cl.initConnection();
 				JOptionPane.showMessageDialog(null, "接続に失敗しました。ルーム検索画面に戻ります。");
@@ -288,6 +288,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 				return true;
 			}
 			initBoard(initiative,handicap,enemyName);
+			updateDisp();
 			if(!initiative){
 				waitEnemy();
 			}
@@ -339,6 +340,8 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 				return false;
 			}
 		}else{
+			othello.stoneDrop(Integer.parseInt(connect[1]), Integer.parseInt(connect[2]), Integer.parseInt(connect[3]));
+			boardPoint=othello.callBoardPoint();
 			finiFlag=checkWin();
 			return false;
 		}
@@ -391,6 +394,8 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 			cl.initConnection();
 			finiFlag=false;
 		}else{
+			othello.stoneDrop(Integer.parseInt(connect[1]), Integer.parseInt(connect[2]), Integer.parseInt(connect[3]));
+			boardPoint=othello.callBoardPoint();
 			finiFlag=checkWin();
 		}
 			//othello.debugChangeInitiative();//デバッグ用,本来なら通信
@@ -538,6 +543,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 							cl.initConnection();
 						}else{
 							othello.stoneDrop(Integer.parseInt(connect[1]), Integer.parseInt(connect[2]), Integer.parseInt(connect[3]));
+							boardPoint=othello.callBoardPoint();
 							finiFlag=checkWin();
 						}
 						
