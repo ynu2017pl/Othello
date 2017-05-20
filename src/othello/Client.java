@@ -76,7 +76,7 @@ public class Client extends JFrame implements ActionListener{
 		String[] con;
 		Timer timer=new Timer(1000,this);
 		do{
-			timer.setInitialDelay(5000);
+			timer.setInitialDelay(1000);
 			con=this.catchConnection();
 		}while(con[0]=="-");
 		return con;

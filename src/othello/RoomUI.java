@@ -15,11 +15,15 @@ public class RoomUI extends JPanel implements MouseListener{
 	Client cl;
 	OthelloUI oUI;
 	private String[] connect,aikoLabel,check;
+	private String[] condi={"条件指定：なし","ハンデ：なし","合言葉：あり"
+			,"作成者：1子局","作成者：2子局","作成者：3子局","作成者：4子局","作成者：引き分け勝ち"
+			,"入室者：1子局","入室者：2子局","入室者：3子局","入室者：4子局","入室者：引き分け勝ち"};
 	private JButton rCreate,rule,passChange,renew,exitButton,roomButton[];
 	private JLabel title,roomLabel[];
 	private JComboBox<String> condiBox;
 	private RoundButton rb[];
 	private ButtonGroup rbGp;
+	private int page;
 	public RoomUI(Client c,OthelloUI ou){
 		cl=c;
 		oUI=ou;
@@ -30,12 +34,11 @@ public class RoomUI extends JPanel implements MouseListener{
 		this.add(title);
 		title.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
 		title.setBounds(10,10,75,30);
-		String[] condi={"条件指定：なし","合言葉：あり","ハンデ:引き分け勝ち","ハンデ:1子局","ハンデ:2子局","ハンデ:3子局","ハンデ:4子局"};
 		condiBox=new JComboBox<String>(condi);
 		this.add(condiBox);
 		condiBox.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
 		condiBox.setBounds(100,10,210,30);
-		rCreate=new JButton("部屋作成(仮)");
+		rCreate=new JButton("部屋作成");
 		this.add(rCreate);
 		rCreate.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
 		rCreate.setBounds(450,10,200,30);
@@ -61,11 +64,11 @@ public class RoomUI extends JPanel implements MouseListener{
 		renew.setBounds(320,10,100,30);
 		renew.addMouseListener(this);
 		
-		roomButton=new JButton[56];
-		roomLabel=new JLabel[56*4];
+		roomButton=new JButton[8];
+		roomLabel=new JLabel[8*4];
 		
-		aikoLabel=new String[56];
-		for(int i=0;i<56;i++){
+		aikoLabel=new String[8];
+		for(int i=0;i<8;i++){
 			aikoLabel[i]=new String();
 			roomLabel[i*4]=new JLabel("ユーザ名");
 			this.add(roomLabel[i*4]);
@@ -117,6 +120,7 @@ public class RoomUI extends JPanel implements MouseListener{
 			rbGp.add(rb[i]);
 		}
 		rb[0].isSelected();
+		page=1;
 		
 	}
 	
@@ -143,6 +147,16 @@ public class RoomUI extends JPanel implements MouseListener{
 		}
 	}
 	
+	public void roomClean(){
+		for(int i=0;i<8;i++){
+			roomButton[i].setActionCommand("-1,"+i);
+			roomLabel[i*4+1].setText("名前");
+			roomLabel[i*4+2].setText("ハンデ");
+			roomLabel[i*4+3].setText("合言葉");
+			aikoLabel[i]="";
+		}
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
@@ -160,225 +174,45 @@ public class RoomUI extends JPanel implements MouseListener{
 				cl.send("10");
 				System.exit(0);
 			}
-		}else if(e.getSource()==rb[0]){
-			for(int i=0;i<56;i++){
-				roomButton[i].setVisible(false);
-			}
-			for(int i=0;i<8;i++){
-				roomButton[i].setVisible(true);
-			}
-			int con,ai=0,count=1;
-			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=6;
-			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
-			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
-			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
-			else if(condiBox.getSelectedItem().equals("ハンデ:3子局")) con=3;
-			else if(condiBox.getSelectedItem().equals("ハンデ:4子局")) con=4;
-			else {
-				con=0;
-				ai=1;
-			}
-			cl.send("3,"+count+","+con+","+ai);
-			connect=cl.waitConnection();
-			while(!connect[0].equals("15")&&!connect[0].equals("11")){
-				cl.initConnection();
-				connect=cl.waitConnection();
-			}
-			cl.initConnection();
-			for(int i=(count-1)*8;i<connect.length/6+(count-1)*8;i++){
-				roomInfoButton(connect[i*6+2],connect[i*6+1],connect[i*6+3],connect[i*6+4],connect[i*6+5],i);
-			}
-		}else if(e.getSource()==rb[1]){
-			for(int i=0;i<56;i++){
-				roomButton[i].setVisible(false);
-			}
-			for(int i=8;i<16;i++){
-				roomButton[i].setVisible(true);
-			}
-			int con,ai=0,count=2;
-			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=6;
-			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
-			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
-			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
-			else if(condiBox.getSelectedItem().equals("ハンデ:3子局")) con=3;
-			else if(condiBox.getSelectedItem().equals("ハンデ:4子局")) con=4;
-			else {
-				con=0;
-				ai=1;
-			}
-			cl.send("3,"+count+","+con+","+ai);
-			connect=cl.waitConnection();
-			while(!connect[0].equals("15")&&!connect[0].equals("11")){
-				cl.initConnection();
-				connect=cl.waitConnection();
-			}
-			cl.initConnection();
-			for(int i=(count-1)*8;i<connect.length/6+(count-1)*8;i++){
-				roomInfoButton(connect[i*6+2],connect[i*6+1],connect[i*6+3],connect[i*6+4],connect[i*6+5],i);
-			}
-		}else if(e.getSource()==rb[2]){
-			for(int i=0;i<56;i++){
-				roomButton[i].setVisible(false);
-			}
-			for(int i=16;i<24;i++){
-				roomButton[i].setVisible(true);
-			}
-			int con,ai=0,count=3;
-			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=6;
-			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
-			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
-			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
-			else if(condiBox.getSelectedItem().equals("ハンデ:3子局")) con=3;
-			else if(condiBox.getSelectedItem().equals("ハンデ:4子局")) con=4;
-			else {
-				con=0;
-				ai=1;
-			}
-			cl.send("3,"+count+","+con+","+ai);
-			connect=cl.waitConnection();
-			while(!connect[0].equals("15")&&!connect[0].equals("11")){
-				cl.initConnection();
-				connect=cl.waitConnection();
-			}
-			cl.initConnection();
-			for(int i=(count-1)*8;i<connect.length/6+(count-1)*8;i++){
-				roomInfoButton(connect[i*6+2],connect[i*6+1],connect[i*6+3],connect[i*6+4],connect[i*6+5],i);
-			}
-		}else if(e.getSource()==rb[3]){
-			for(int i=0;i<56;i++){
-				roomButton[i].setVisible(false);
-			}
-			for(int i=24;i<32;i++){
-				roomButton[i].setVisible(true);
-			}
-			int con,ai=0,count=4;
-			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=6;
-			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
-			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
-			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
-			else if(condiBox.getSelectedItem().equals("ハンデ:3子局")) con=3;
-			else if(condiBox.getSelectedItem().equals("ハンデ:4子局")) con=4;
-			else {
-				con=0;
-				ai=1;
-			}
-			cl.send("3,"+count+","+con+","+ai);
-			connect=cl.waitConnection();
-			while(!connect[0].equals("15")&&!connect[0].equals("11")){
-				cl.initConnection();
-				connect=cl.waitConnection();
-			}
-			cl.initConnection();
-			for(int i=(count-1)*8;i<connect.length/6+(count-1)*8;i++){
-				roomInfoButton(connect[i*6+2],connect[i*6+1],connect[i*6+3],connect[i*6+4],connect[i*6+5],i);
-			}
-		}else if(e.getSource()==rb[4]){
-			for(int i=0;i<56;i++){
-				roomButton[i].setVisible(false);
-			}
-			for(int i=32;i<40;i++){
-				roomButton[i].setVisible(true);
-			}
-			int con,ai=0,count=5;
-			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=6;
-			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
-			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
-			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
-			else if(condiBox.getSelectedItem().equals("ハンデ:3子局")) con=3;
-			else if(condiBox.getSelectedItem().equals("ハンデ:4子局")) con=4;
-			else {
-				con=0;
-				ai=1;
-			}
-			cl.send("3,"+count+","+con+","+ai);
-			connect=cl.waitConnection();
-			while(!connect[0].equals("15")&&!connect[0].equals("11")){
-				cl.initConnection();
-				connect=cl.waitConnection();
-			}
-			cl.initConnection();
-			for(int i=(count-1)*8;i<connect.length/6+(count-1)*8;i++){
-				roomInfoButton(connect[i*6+2],connect[i*6+1],connect[i*6+3],connect[i*6+4],connect[i*6+5],i);
-			}
-		}else if(e.getSource()==rb[5]){
-			for(int i=0;i<56;i++){
-				roomButton[i].setVisible(false);
-			}
-			for(int i=40;i<48;i++){
-				roomButton[i].setVisible(true);
-			}
-			int con,ai=0,count=6;
-			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=6;
-			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
-			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
-			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
-			else if(condiBox.getSelectedItem().equals("ハンデ:3子局")) con=3;
-			else if(condiBox.getSelectedItem().equals("ハンデ:4子局")) con=4;
-			else {
-				con=0;
-				ai=1;
-			}
-			cl.send("3,"+count+","+con+","+ai);
-			connect=cl.waitConnection();
-			while(!connect[0].equals("15")&&!connect[0].equals("11")){
-				cl.initConnection();
-				connect=cl.waitConnection();
-			}
-			cl.initConnection();
-			for(int i=(count-1)*8;i<connect.length/6+(count-1)*8;i++){
-				roomInfoButton(connect[i*6+2],connect[i*6+1],connect[i*6+3],connect[i*6+4],connect[i*6+5],i);
-			}
-		}else if(e.getSource()==rb[6]){
-			for(int i=0;i<56;i++){
-				roomButton[i].setVisible(false);
-			}
-			for(int i=48;i<56;i++){
-				roomButton[i].setVisible(true);
-			}
-			int con,ai=0,count=7;
-			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=6;
-			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
-			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
-			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
-			else if(condiBox.getSelectedItem().equals("ハンデ:3子局")) con=3;
-			else if(condiBox.getSelectedItem().equals("ハンデ:4子局")) con=4;
-			else {
-				con=0;
-				ai=1;
-			}
-			cl.send("3,"+count+","+con+","+ai);
-			connect=cl.waitConnection();
-			while(!connect[0].equals("15")&&!connect[0].equals("11")){
-				cl.initConnection();
-				connect=cl.waitConnection();
-			}
-			cl.initConnection();
-			for(int i=(count-1)*8;i<connect.length/6+(count-1)*8;i++){
-				roomInfoButton(connect[i*6+2],connect[i*6+1],connect[i*6+3],connect[i*6+4],connect[i*6+5],i);
-			}
-		}else if(e.getSource()==renew){
+		}else if(e.getSource()==rb[0]||e.getSource()==rb[1]||e.getSource()==rb[2]||e.getSource()==rb[3]||e.getSource()==rb[4]||e.getSource()==rb[5]||e.getSource()==rb[6]){
+			roomClean();
 			int con,ai=0,count=0;
-			while(rb[count].isSelected()) count++;
+			while(!rb[count].isSelected()) count++;
 			count++;
-			if(condiBox.getSelectedItem().equals("条件指定：なし")) con=6;
-			else if(condiBox.getSelectedItem().equals("ハンデ:引き分け勝ち")) con=5;
-			else if(condiBox.getSelectedItem().equals("ハンデ:1子局")) con=1;
-			else if(condiBox.getSelectedItem().equals("ハンデ:2子局")) con=2;
-			else if(condiBox.getSelectedItem().equals("ハンデ:3子局")) con=3;
-			else if(condiBox.getSelectedItem().equals("ハンデ:4子局")) con=4;
-			else {
+			page=count;
+			con=changeStrHand(condiBox.getSelectedItem().toString());
+			if(con==-6){
 				con=0;
 				ai=1;
 			}
-			cl.send("3,"+count+","+con+","+ai);
+			cl.send("3,"+page+","+con+","+ai);
 			connect=cl.waitConnection();
 			while(!connect[0].equals("15")&&!connect[0].equals("11")){
 				cl.initConnection();
 				connect=cl.waitConnection();
 			}
 			cl.initConnection();
-			for(int i=(count-1)*8;i<connect.length/6+(count-1)*8;i++){
-				roomInfoButton(connect[i*6+2],connect[i*6+1],connect[i*6+3],connect[i*6+4],connect[i*6+5],i);
+			for(int i=0;i<(connect.length-1)/5;i++){
+				roomInfoButton(connect[i*5+2],connect[i*5+1],connect[i*5+3],connect[i*5+4],connect[i*5+5],i);
+			}
+			this.repaint();
+		}else if(e.getSource()==renew){
+			int con,ai=0;
+			con=changeStrHand(condiBox.getSelectedItem().toString());
+			if(con==-6){
+				con=0;
+				ai=1;
+			}
+			cl.send("3,"+page+","+con+","+ai);
+			connect=cl.waitConnection();
+			while(!connect[0].equals("15")&&!connect[0].equals("11")){
+				cl.initConnection();
+				connect=cl.waitConnection();
+			}
+			cl.initConnection();
+			roomClean();
+			for(int i=0;i<(connect.length-1)/5;i++){
+				roomInfoButton(connect[i*5+2],connect[i*5+1],connect[i*5+3],connect[i*5+4],connect[i*5+5],i);
 				/*
 				roomLabel[i+1].setText("仮");//暫定
 				String clabel=changeStrHand(Integer.parseInt(connect[2]));
@@ -389,6 +223,7 @@ public class RoomUI extends JPanel implements MouseListener{
 				roomInfoButton("4","ジョンソン","5","1",2);
 				*/
 			}
+			this.repaint();
 		}else{
 			JButton theButton = (JButton)e.getComponent();//クリックしたオブジェクトを得る．キャストを忘れずに
 			String[] command = theButton.getActionCommand().split(",",0);//ボタンの名前を取り出す
@@ -412,14 +247,18 @@ public class RoomUI extends JPanel implements MouseListener{
 							}
 							if(check[0].equals("14")){
 								int han=Integer.parseInt(connect[3])*(-1);
-								boolean init=true;
-								if(Integer.parseInt(connect[2])==0){
+								boolean init=false;
+								if(Integer.parseInt(connect[2])==1){
+									init=true;
 									han*=-1;
-									init=false;
 								}
 								oUI.initBoard(init,han,connect[1]);
-								cl.screenTransition((JPanel)this, "oUI");
-								if(Integer.parseInt(connect[2])==0){
+								if(Integer.parseInt(connect[2])==1){
+									cl.screenTransition((JPanel)this, "oUI");
+									JOptionPane.showMessageDialog(null, "あなたは先攻です。");
+								}else{
+									cl.screenTransition((JPanel)this, "oUI");
+									JOptionPane.showMessageDialog(null, "あなたは後攻です。");
 									oUI.waitEnemy();
 								}
 							}
@@ -442,15 +281,19 @@ public class RoomUI extends JPanel implements MouseListener{
 							check=cl.waitConnection();
 						}
 						if(check[0].equals("14")){
-							int han=Integer.parseInt(connect[3])*(-1);
-							boolean init=true;
-							if(Integer.parseInt(connect[2])==0){
+							int han=Integer.parseInt(connect[3]);
+							boolean init=false;
+							if(Integer.parseInt(connect[2])==1){
+								init=true;
 								han*=-1;
-								init=false;
 							}
 							oUI.initBoard(init,han,connect[1]);
-							cl.screenTransition((JPanel)this, "oUI");
-							if(Integer.parseInt(connect[2])==0){
+							if(Integer.parseInt(connect[2])==1){
+								cl.screenTransition((JPanel)this, "oUI");
+								JOptionPane.showMessageDialog(null, "あなたは先攻です。");
+							}else{
+								cl.screenTransition((JPanel)this, "oUI");
+								JOptionPane.showMessageDialog(null, "あなたは後攻です。");
 								oUI.waitEnemy();
 							}
 						}
@@ -465,31 +308,35 @@ public class RoomUI extends JPanel implements MouseListener{
 	}
 	
 	public String changeStrHand(int ha){
-		if(ha==0)return "ハンデ:なし";
-		else if(ha==5)return "作成者：引き分け勝ち";
-		else if(ha==1)return "作成者：1子局";
-		else if(ha==2)return "作成者：2子局";
-		else if(ha==3)return "作成者：3子局";
-		else if(ha==4)return "作成者：4子局";
-		else if(ha==-5)return "入室者：引き分け勝ち";
-		else if(ha==-1)return "入室者：1子局";
-		else if(ha==-2)return "入室者：2子局";
-		else if(ha==-3)return "入室者：3子局";
-		else return "入室者：4子局";
+		if(ha==0)return condi[1];
+		else if(ha==6)return condi[0];
+		else if(ha==5)return condi[7];
+		else if(ha==1)return condi[3];
+		else if(ha==2)return condi[4];
+		else if(ha==3)return condi[5];
+		else if(ha==4)return condi[6];
+		else if(ha==-5)return condi[12];
+		else if(ha==-1)return condi[8];
+		else if(ha==-2)return condi[9];
+		else if(ha==-3)return condi[10];
+		else if(ha==-4)return condi[11];
+		else return condi[1];
 	}
 	
 	public int changeStrHand(String ha){
-		if(ha.equals("ハンデ:なし")) return 0;
-		else if(ha.equals("作成者：引き分け勝ち")) return 5;
-		else if(ha.equals("作成者：1子局")) return 1;
-		else if(ha.equals("作成者：2子局")) return 2;
-		else if(ha.equals("作成者：3子局")) return 3;
-		else if(ha.equals("作成者：4子局")) return 4;
-		else if(ha.equals("入室者：引き分け勝ち")) return -5;
-		else if(ha.equals("入室者：1子局")) return -1;
-		else if(ha.equals("入室者：2子局")) return -2;
-		else if(ha.equals("入室者：3子局")) return -3;
-		else return -4;
+		if(ha.equals(condi[0])) return 6;
+		else if(ha.equals(condi[1])) return 0;
+		else if(ha.equals(condi[3])) return 1;
+		else if(ha.equals(condi[4])) return 2;
+		else if(ha.equals(condi[5])) return 3;
+		else if(ha.equals(condi[6])) return 4;
+		else if(ha.equals(condi[7])) return 5;
+		else if(ha.equals(condi[8])) return -1;
+		else if(ha.equals(condi[9])) return -2;
+		else if(ha.equals(condi[10])) return -3;
+		else if(ha.equals(condi[11])) return -4;
+		else if(ha.equals(condi[12])) return -5;
+		else return -6;
 	}
 	
 	@Override

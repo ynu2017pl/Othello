@@ -83,7 +83,7 @@ public class RoomCreateUI extends JPanel implements MouseListener{
 		this.add(aikoText);
 		aikoText.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
 		aikoText.setBounds(320,250,300,50);
-		
+		/*
 		dIni=new JLabel("デバッグ");
 		this.add(dIni);
 		dIni.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 20));
@@ -104,7 +104,7 @@ public class RoomCreateUI extends JPanel implements MouseListener{
 		this.add(dText);
 		dText.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
 		dText.setBounds(320,350,300,50);
-		
+		*/
 		roomCreButton=new JButton("オセロ開始(仮)");
 		this.add(roomCreButton);
 		roomCreButton.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
@@ -130,7 +130,7 @@ public boolean battleStart(){
 		do{
 			check=cl.waitConnection();
 		}while(!check[0].equals("14")&&!check[0].equals("15"));
-		if(check[1].equals("14")) {
+		if(check[0].equals("14")) {
 			cl.initConnection();
 			return true;
 		}else{
@@ -186,12 +186,16 @@ public boolean battleStart(){
 			boolean init=true;
 			int hand=Integer.parseInt(connect[3]);
 			if(Integer.parseInt(connect[2])==0){
-				handicap*=-1;
+				hand*=-1;
 				init=false;
 			}
 			oUI.initBoard(init,hand,connect[1]);
-			cl.screenTransition((JPanel)this, "oUI");
-			if(Integer.parseInt(connect[2])==0){
+			if(Integer.parseInt(connect[2])==1){
+				cl.screenTransition((JPanel)this, "oUI");
+				JOptionPane.showMessageDialog(null, "あなたは先攻です。");
+			}else{
+				cl.screenTransition((JPanel)this, "oUI");
+				JOptionPane.showMessageDialog(null, "あなたは後攻です。");
 				oUI.waitEnemy();
 			}
 		}else if(e.getSource()==cancel){

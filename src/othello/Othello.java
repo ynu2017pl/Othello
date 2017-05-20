@@ -142,30 +142,62 @@ public class Othello {
 	boolean stoneDrop(int y,int x,int value){
 		int check_x,check_y;
 		boolean flag=false;
-		if(checkDrop(y,x)){
-			board[y][x]=value;
-			for (int i=-1;i<+2;i++){
-				for (int j=-1;j<+2;j++){
-					if(checkLineDrop(y,x,i,j)){
-						flag=true;
-						check_y=y+i;
-						check_x=x+j;
-						if(initiative){
-							while(board[check_y][check_x]>0) {
-								board[check_y][check_x]-=8;
-								check_y+=i;
-								check_x+=j;
-							}
-						}else{
-							while(board[check_y][check_x]<0) {
-								board[check_y][check_x]+=8;
-								check_y+=i;
-								check_x+=j;
+		boolean che=true;
+		if (value>0)che=false;
+		if(che==initiative){
+			if(checkDrop(y,x)){
+				board[y][x]=value;
+				for (int i=-1;i<+2;i++){
+					for (int j=-1;j<+2;j++){
+						if(checkLineDrop(y,x,i,j)){
+							flag=true;
+							check_y=y+i;
+							check_x=x+j;
+							if(initiative){
+								while(board[check_y][check_x]>0) {
+									board[check_y][check_x]-=8;
+									check_y+=i;
+									check_x+=j;
+								}
+							}else{
+								while(board[check_y][check_x]<0) {
+									board[check_y][check_x]+=8;
+									check_y+=i;
+									check_x+=j;
+								}
 							}
 						}
 					}
 				}
 			}
+		}else{
+			initiative=!initiative;
+			if(checkDrop(y,x)){
+				board[y][x]=value;
+				for (int i=-1;i<+2;i++){
+					for (int j=-1;j<+2;j++){
+						if(checkLineDrop(y,x,i,j)){
+							flag=true;
+							check_y=y+i;
+							check_x=x+j;
+							if(initiative){
+								while(board[check_y][check_x]>0) {
+									board[check_y][check_x]-=8;
+									check_y+=i;
+									check_x+=j;
+								}
+							}else{
+								while(board[check_y][check_x]<0) {
+									board[check_y][check_x]+=8;
+									check_y+=i;
+									check_x+=j;
+								}
+							}
+						}
+					}
+				}
+			}
+			initiative=!initiative;
 		}
 		return flag;
 	}
