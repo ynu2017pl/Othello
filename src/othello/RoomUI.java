@@ -20,11 +20,11 @@ public class RoomUI extends JPanel implements MouseListener{
 			,"作成者：1子局","作成者：2子局","作成者：3子局","作成者：4子局","作成者：引き分け勝ち"
 			,"入室者：1子局","入室者：2子局","入室者：3子局","入室者：4子局","入室者：引き分け勝ち"};
 	private JButton rCreate,rule,passChange,renew,exitButton,roomButton[];
-	private JLabel title,roomLabel[];
+	private JLabel title,roomLabel[],back;
 	private JComboBox<String> condiBox;
 	private RoundButton rb[];
 	private ButtonGroup rbGp;
-	private ImageIcon pageIcon[];
+	private ImageIcon pageIcon[],backIcon;
 	private int page;
 	public RoomUI(Client c,OthelloUI ou){
 		cl=c;
@@ -130,7 +130,10 @@ public class RoomUI extends JPanel implements MouseListener{
 		}
 		rb[0].isSelected();
 		page=1;
-		
+		backIcon = new ImageIcon("ルーム背景.jpg");
+		back=new JLabel(backIcon);
+		this.add(back);
+		back.setBounds(0,0,700,550);
 	}
 	
 	public void roomInfoButton(String no,String teki,String hande,String aikotoba,String aiko,int noButton){
