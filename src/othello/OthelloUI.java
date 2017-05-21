@@ -1,5 +1,6 @@
 //オセロUI部分
 package othello;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +10,6 @@ import java.awt.event.MouseListener;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,12 +20,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class OthelloUI extends JPanel implements MouseListener,ChangeListener,ActionListener{
-	private JButton buttonArray[][],rule,giveup;
+	private RoundedCornerButton buttonArray[][],rule,giveup;
 	private AbstractButton chooseStone[];
 	private JCheckBox showAbleDrop;
 	private ButtonGroup group;
-	private JLabel timeLabel,showTime,showIni,enemy,bwPointTemp,blackPoint,whitePoint;
-	private ImageIcon blackIcon[], whiteIcon[], boardIcon[];
+	private JLabel timeLabel,showTime,showIni,enemy,bwPointTemp,blackPoint,whitePoint,back;
+	private ImageIcon blackIcon[], whiteIcon[], boardIcon[],backIcon;
 	private int boardPoint[]=new int[2];
 	private int board[][];
 	private int hand[]=new int[6];
@@ -58,96 +58,97 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		boardPoint=othello.callBoardPoint();
 		enemy=new JLabel();
 		this.add(enemy);
-		enemy.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		enemy.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		enemy.setBounds(25, 0,400,50);
 		timeLabel=new JLabel("残り時間");
 		this.add(timeLabel);
-		timeLabel.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
+		timeLabel.setFont(new Font("富士ポップ", Font.BOLD, 18));
 		timeLabel.setBounds(490, 275,400,50);
 		showTime=new JLabel("");
 		this.add(showTime);
-		showTime.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 30));
+		showTime.setFont(new Font("富士ポップ", Font.BOLD, 30));
 		showTime.setBounds(485, 310,400,50);
 		showIni=new JLabel();
 		this.add(showIni);
-		showIni.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		showIni.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		showIni.setBounds(450, 360,400,50);
 		whiteIcon = new ImageIcon[7];
-		whiteIcon[0] = new ImageIcon("White.jpg");
-		whiteIcon[1] = new ImageIcon("White+1.jpg");
-		whiteIcon[2] = new ImageIcon("White+2.jpg");
-		whiteIcon[3] = new ImageIcon("White+3.jpg");
-		whiteIcon[4] = new ImageIcon("White-1.jpg");
-		whiteIcon[5] = new ImageIcon("White-2.jpg");
-		whiteIcon[6] = new ImageIcon("White-3.jpg");
+		whiteIcon[0] = new ImageIcon("White.png");
+		whiteIcon[1] = new ImageIcon("White+1.png");
+		whiteIcon[2] = new ImageIcon("White+2.png");
+		whiteIcon[3] = new ImageIcon("White+3.png");
+		whiteIcon[4] = new ImageIcon("White-1.png");
+		whiteIcon[5] = new ImageIcon("White-2.png");
+		whiteIcon[6] = new ImageIcon("White-3.png");
 		blackIcon = new ImageIcon[7];
-		blackIcon[0] = new ImageIcon("Black.jpg");
-		blackIcon[1] = new ImageIcon("Black+1.jpg");
-		blackIcon[2] = new ImageIcon("Black+2.jpg");
-		blackIcon[3] = new ImageIcon("Black+3.jpg");
-		blackIcon[4] = new ImageIcon("Black-1.jpg");
-		blackIcon[5] = new ImageIcon("Black-2.jpg");
-		blackIcon[6] = new ImageIcon("Black-3.jpg");
+		blackIcon[0] = new ImageIcon("Black.png");
+		blackIcon[1] = new ImageIcon("Black+1.png");
+		blackIcon[2] = new ImageIcon("Black+2.png");
+		blackIcon[3] = new ImageIcon("Black+3.png");
+		blackIcon[4] = new ImageIcon("Black-1.png");
+		blackIcon[5] = new ImageIcon("Black-2.png");
+		blackIcon[6] = new ImageIcon("Black-3.png");
 		boardIcon=new ImageIcon[2];
-		boardIcon[0] = new ImageIcon("GreenFrame.jpg");
-		boardIcon[1] = new ImageIcon("YellowFrame.jpg");
+		boardIcon[0] = new ImageIcon("GreenFrame.png");
+		boardIcon[1] = new ImageIcon("YellowFrame.png");
 		showAbleDrop=new JCheckBox("設置可能場所の表示");
 		this.add(showAbleDrop);
-		showAbleDrop.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		showAbleDrop.setOpaque(false);
+		showAbleDrop.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		showAbleDrop.setBounds(410, 235,400,50);
 		showAbleDrop.addChangeListener(this);
 		bwPointTemp=new JLabel("黒　　　：　　　白 更新まで");
 		this.add(bwPointTemp);
-		bwPointTemp.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		bwPointTemp.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		bwPointTemp.setBounds(50, 430,400,50);
 		blackPoint=new JLabel(String.format("%+03d",boardPoint[1]));
 		this.add(blackPoint);
-		blackPoint.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		blackPoint.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		blackPoint.setBounds(110, 430,100,50);
 		whitePoint=new JLabel(String.format("%+03d",boardPoint[0]));
 		this.add(whitePoint);
-		whitePoint.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		whitePoint.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		whitePoint.setBounds(160, 430,100,50);
-		rule=new JButton("ルール確認");
+		rule=new RoundedCornerButton("ルール確認");
 		this.add(rule);
-		rule.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		rule.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		rule.setBounds(400,430,150,50);
 		rule.addMouseListener(this);
-		giveup=new JButton("投了");
+		giveup=new RoundedCornerButton("投了");
 		this.add(giveup);
-		giveup.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		giveup.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		giveup.setBounds(560,430,100,50);
 		giveup.addMouseListener(this);
-		buttonArray=new JButton[8][8];
+		buttonArray=new RoundedCornerButton[8][8];
 		board=othello.callBoard();
 		for(int i=0;i<8;i++){
 			for(int j=0;j<8;j++){
-				buttonArray[i][j]=new JButton();
+				buttonArray[i][j]=new RoundedCornerButton();
 				/*
 				if(initiative){
-					if(board[i][j]>0) buttonArray[i][j]=new JButton(whiteIcon[0]);
-					else if(board[i][j]==-7) buttonArray[i][j]=new JButton(blackIcon[6]);
-					else if(board[i][j]==-6) buttonArray[i][j]=new JButton(blackIcon[5]);
-					else if(board[i][j]==-5) buttonArray[i][j]=new JButton(blackIcon[4]);
-					else if(board[i][j]==-3) buttonArray[i][j]=new JButton(blackIcon[1]);
-					else if(board[i][j]==-2) buttonArray[i][j]=new JButton(blackIcon[2]);
-					else if(board[i][j]==-1) buttonArray[i][j]=new JButton(blackIcon[3]);
+					if(board[i][j]>0) buttonArray[i][j]=new RoundedCornerButton(whiteIcon[0]);
+					else if(board[i][j]==-7) buttonArray[i][j]=new RoundedCornerButton(blackIcon[6]);
+					else if(board[i][j]==-6) buttonArray[i][j]=new RoundedCornerButton(blackIcon[5]);
+					else if(board[i][j]==-5) buttonArray[i][j]=new RoundedCornerButton(blackIcon[4]);
+					else if(board[i][j]==-3) buttonArray[i][j]=new RoundedCornerButton(blackIcon[1]);
+					else if(board[i][j]==-2) buttonArray[i][j]=new RoundedCornerButton(blackIcon[2]);
+					else if(board[i][j]==-1) buttonArray[i][j]=new RoundedCornerButton(blackIcon[3]);
 					else if(showAbleDrop.isSelected()){
-						if(othello.checkDrop(i,j)) buttonArray[i][j]=new JButton(boardIcon[1]);
-						else buttonArray[i][j]=new JButton(boardIcon[0]);
-					}else buttonArray[i][j]=new JButton(boardIcon[0]);
+						if(othello.checkDrop(i,j)) buttonArray[i][j]=new RoundedCornerButton(boardIcon[1]);
+						else buttonArray[i][j]=new RoundedCornerButton(boardIcon[0]);
+					}else buttonArray[i][j]=new RoundedCornerButton(boardIcon[0]);
 				}else{
-					if(board[i][j]<0) buttonArray[i][j]=new JButton(blackIcon[0]);
-					else if(board[i][j]==1) buttonArray[i][j]=new JButton(whiteIcon[6]);
-					else if(board[i][j]==2) buttonArray[i][j]=new JButton(whiteIcon[5]);
-					else if(board[i][j]==3) buttonArray[i][j]=new JButton(whiteIcon[4]);
-					else if(board[i][j]==5) buttonArray[i][j]=new JButton(whiteIcon[1]);
-					else if(board[i][j]==6) buttonArray[i][j]=new JButton(whiteIcon[2]);
-					else if(board[i][j]==7) buttonArray[i][j]=new JButton(whiteIcon[3]);
+					if(board[i][j]<0) buttonArray[i][j]=new RoundedCornerButton(blackIcon[0]);
+					else if(board[i][j]==1) buttonArray[i][j]=new RoundedCornerButton(whiteIcon[6]);
+					else if(board[i][j]==2) buttonArray[i][j]=new RoundedCornerButton(whiteIcon[5]);
+					else if(board[i][j]==3) buttonArray[i][j]=new RoundedCornerButton(whiteIcon[4]);
+					else if(board[i][j]==5) buttonArray[i][j]=new RoundedCornerButton(whiteIcon[1]);
+					else if(board[i][j]==6) buttonArray[i][j]=new RoundedCornerButton(whiteIcon[2]);
+					else if(board[i][j]==7) buttonArray[i][j]=new RoundedCornerButton(whiteIcon[3]);
 					else if(showAbleDrop.isSelected()){
-						if(othello.checkDrop(i,j)) buttonArray[i][j]=new JButton(boardIcon[1]);
-						else buttonArray[i][j]=new JButton(boardIcon[0]);
-					}else buttonArray[i][j]=new JButton(boardIcon[0]);
+						if(othello.checkDrop(i,j)) buttonArray[i][j]=new RoundedCornerButton(boardIcon[1]);
+						else buttonArray[i][j]=new RoundedCornerButton(boardIcon[0]);
+					}else buttonArray[i][j]=new RoundedCornerButton(boardIcon[0]);
 				}
 				*/
 				this.add(buttonArray[i][j]);
@@ -164,6 +165,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 			chooseStone[i]=new JToggleButton();
 			chooseStone[i].setHorizontalTextPosition(JToggleButton.CENTER);
 			chooseStone[i].setVerticalTextPosition(JToggleButton.BOTTOM);
+			chooseStone[i].setBackground(Color.WHITE);
 			/*
 			if(initiative){
 				chooseStone[i]=new JToggleButton();
@@ -179,10 +181,14 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 			this.add(chooseStone[i]);
 			int y = 60+(i/3)*90;
 			int x = 410+(i%3)*80;
+			chooseStone[i].setFont(new Font("富士ポップ", Font.BOLD, 16));
 			chooseStone[i].setBounds(x, y, 70, 80);//ボタンの大きさと位置を設定する．
 		}
 		chooseStone[0].setSelected(true);
-		//timer.start();
+		backIcon = new ImageIcon("オセロ背景.jpg");
+		back=new JLabel(backIcon);
+		this.add(back);
+		back.setBounds(0,0,700,550);
 	}
 	
 	
@@ -343,6 +349,9 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 			if(connect[1].equals("-6")){
 				JOptionPane.showMessageDialog(null, "相手は敗北を認めました。あなたの勝ちです。");
 				cl.screenTransition((JPanel)this, "rUI");
+			}else if(connect[1].equals("-7")){
+				JOptionPane.showMessageDialog(null, "相手は時間切れになりました。あなたの勝ちです。");
+				cl.screenTransition((JPanel)this, "rUI");
 			}else{
 				othello.stoneDrop(Integer.parseInt(connect[1]), Integer.parseInt(connect[2]), Integer.parseInt(connect[3]));
 				boardPoint=othello.callBoardPoint();
@@ -406,6 +415,9 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 			if(connect[1].equals("-6")){
 				JOptionPane.showMessageDialog(null, "相手は敗北を認めました。あなたの勝ちです。");
 				cl.screenTransition((JPanel)this, "rUI");
+			}else if(connect[1].equals("-7")){
+				JOptionPane.showMessageDialog(null, "相手は時間切れになりました。あなたの勝ちです。");
+				cl.screenTransition((JPanel)this, "rUI");
 			}else{
 				othello.stoneDrop(Integer.parseInt(connect[1]), Integer.parseInt(connect[2]), Integer.parseInt(connect[3]));
 				boardPoint=othello.callBoardPoint();
@@ -432,7 +444,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 				cl.screenTransition((JPanel)this, "rUI");
 			}
 		}else{
-			JButton theButton = (JButton)e.getComponent();//クリックしたオブジェクトを得る．キャストを忘れずに
+			RoundedCornerButton theButton = (RoundedCornerButton)e.getComponent();//クリックしたオブジェクトを得る．キャストを忘れずに
 			String command = theButton.getActionCommand();//ボタンの名前を取り出す
 			board=othello.callBoard();
 			int num = Integer.parseInt(command);
@@ -562,6 +574,9 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 						}else if(connect[0].equals("8")){
 							if(connect[1].equals("-6")){
 								JOptionPane.showMessageDialog(null, "相手は敗北を認めました。あなたの勝ちです。");
+								cl.screenTransition((JPanel)this, "rUI");
+							}else if(connect[1].equals("-7")){
+								JOptionPane.showMessageDialog(null, "相手は時間切れになりました。あなたの勝ちです。");
 								cl.screenTransition((JPanel)this, "rUI");
 							}else{
 								othello.stoneDrop(Integer.parseInt(connect[1]), Integer.parseInt(connect[2]), Integer.parseInt(connect[3]));

@@ -1,19 +1,89 @@
 package othello;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JButton;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.UIManager;
 
 public class PasswordChangeUI extends JPanel implements MouseListener {
 	Client cl;
-	private JPasswordField oldPass,newPass,renewPass;
+	private JPasswordField oldPass = new JPasswordField(20) {
+		  @Override protected void paintComponent(Graphics g) {
+		    if (!isOpaque()) {
+		      int w = getWidth() - 1;
+		      int h = getHeight() - 1;
+		      Graphics2D g2 = (Graphics2D) g.create();
+		      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		                          RenderingHints.VALUE_ANTIALIAS_ON);
+		      g2.setPaint(UIManager.getColor("TextField.background"));
+		      g2.fillRoundRect(0, 0, w, h, h, h);
+		      g2.setPaint(Color.GRAY);
+		      g2.drawRoundRect(0, 0, w, h, h, h);
+		      g2.dispose();
+		    }
+		    super.paintComponent(g);
+		  }
+		  @Override public void updateUI() {
+		    super.updateUI();
+		    setOpaque(false);
+		    setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+		  }
+	};
+	private JPasswordField newPass = new JPasswordField(20) {
+		  @Override protected void paintComponent(Graphics g) {
+		    if (!isOpaque()) {
+		      int w = getWidth() - 1;
+		      int h = getHeight() - 1;
+		      Graphics2D g2 = (Graphics2D) g.create();
+		      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		                          RenderingHints.VALUE_ANTIALIAS_ON);
+		      g2.setPaint(UIManager.getColor("TextField.background"));
+		      g2.fillRoundRect(0, 0, w, h, h, h);
+		      g2.setPaint(Color.GRAY);
+		      g2.drawRoundRect(0, 0, w, h, h, h);
+		      g2.dispose();
+		    }
+		    super.paintComponent(g);
+		  }
+		  @Override public void updateUI() {
+		    super.updateUI();
+		    setOpaque(false);
+		    setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+		  }
+	};
+	private JPasswordField renewPass = new JPasswordField(20) {
+		  @Override protected void paintComponent(Graphics g) {
+		    if (!isOpaque()) {
+		      int w = getWidth() - 1;
+		      int h = getHeight() - 1;
+		      Graphics2D g2 = (Graphics2D) g.create();
+		      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		                          RenderingHints.VALUE_ANTIALIAS_ON);
+		      g2.setPaint(UIManager.getColor("TextField.background"));
+		      g2.fillRoundRect(0, 0, w, h, h, h);
+		      g2.setPaint(Color.GRAY);
+		      g2.drawRoundRect(0, 0, w, h, h, h);
+		      g2.dispose();
+		    }
+		    super.paintComponent(g);
+		  }
+		  @Override public void updateUI() {
+		    super.updateUI();
+		    setOpaque(false);
+		    setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+		  }
+	};
 	private JLabel title,newPassLabel,oldPassLabel,renewPassLabel;
-	private JButton change,cancel;
+	private RoundedCornerButton change,cancel;
 	public PasswordChangeUI(Client c){
 		cl=c;
 		this.setSize(700, 550);
@@ -21,41 +91,41 @@ public class PasswordChangeUI extends JPanel implements MouseListener {
 		this.setLayout(null);
 		title=new JLabel("パスワード変更");
 		this.add(title);
-		title.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		title.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		title.setBounds(10,10,300,30);
 		oldPassLabel=new JLabel("旧パスワード：");
 		this.add(oldPassLabel);
-		oldPassLabel.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
-		oldPassLabel.setBounds(100,100,200,30);
-		oldPass=new JPasswordField();
+		oldPassLabel.setFont(new Font("富士ポップ", Font.BOLD, 22));
+		oldPassLabel.setBounds(77,100,200,30);
+		//oldPass=new JPasswordField();
 		this.add(oldPass);
-		oldPass.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
-		oldPass.setBounds(300,100,350,30);
+		oldPass.setFont(new Font("富士ポップ", Font.BOLD, 22));
+		oldPass.setBounds(250,100,350,30);
 		newPassLabel=new JLabel("新パスワード：");
 		this.add(newPassLabel);
-		newPassLabel.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
-		newPassLabel.setBounds(100,200,350,30);
-		newPass=new JPasswordField();
+		newPassLabel.setFont(new Font("富士ポップ", Font.BOLD, 22));
+		newPassLabel.setBounds(77,200,350,30);
+		//newPass=new JPasswordField();
 		this.add(newPass);
-		newPass.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
-		newPass.setBounds(300,200,350,30);
+		newPass.setFont(new Font("富士ポップ", Font.BOLD, 22));
+		newPass.setBounds(250,200,350,30);
 		renewPassLabel=new JLabel("新パスワード(再)：");
 		this.add(renewPassLabel);
-		renewPassLabel.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
-		renewPassLabel.setBounds(80,300,350,30);
-		renewPass=new JPasswordField();
+		renewPassLabel.setFont(new Font("富士ポップ", Font.BOLD, 22));
+		renewPassLabel.setBounds(30,300,350,30);
+		//renewPass=new JPasswordField();
 		this.add(renewPass);
-		renewPass.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
-		renewPass.setBounds(300,300,350,30);
+		renewPass.setFont(new Font("富士ポップ", Font.BOLD, 22));
+		renewPass.setBounds(250,300,350,30);
 		
-		change=new JButton("変更");
+		change=new RoundedCornerButton("変更");
 		this.add(change);
-		change.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		change.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		change.setBounds(80,430,200,50);
 		change.addMouseListener(this);
-		cancel=new JButton("キャンセル");
+		cancel=new RoundedCornerButton("キャンセル");
 		this.add(cancel);
-		cancel.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		cancel.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		cancel.setBounds(400,430,200,50);
 		cancel.addMouseListener(this);
 	}

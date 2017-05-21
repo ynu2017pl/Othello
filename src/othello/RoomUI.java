@@ -1,12 +1,12 @@
 package othello;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,7 +19,8 @@ public class RoomUI extends JPanel implements MouseListener{
 	private String[] condi={"条件指定：なし","ハンデ：なし","合言葉：あり"
 			,"作成者：1子局","作成者：2子局","作成者：3子局","作成者：4子局","作成者：引き分け勝ち"
 			,"入室者：1子局","入室者：2子局","入室者：3子局","入室者：4子局","入室者：引き分け勝ち"};
-	private JButton rCreate,rule,passChange,renew,exitButton,roomButton[];
+	private RoundedCornerButton rCreate,rule,renew,passChange,exitButton,roomButton[];
+	
 	private JLabel title,roomLabel[],back;
 	private JComboBox<String> condiBox;
 	private RoundButton rb[];
@@ -34,39 +35,40 @@ public class RoomUI extends JPanel implements MouseListener{
 		this.setLayout(null);
 		title=new JLabel("ルーム");
 		this.add(title);
-		title.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		title.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		title.setBounds(10,10,75,30);
 		condiBox=new JComboBox<String>(condi);
 		this.add(condiBox);
-		condiBox.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
-		condiBox.setBounds(100,10,210,30);
-		rCreate=new JButton("部屋作成");
+		condiBox.setBackground(Color.WHITE);
+		condiBox.setFont(new Font("富士ポップ", Font.BOLD, 18));
+		condiBox.setBounds(100,10,215,30);
+		rCreate=new RoundedCornerButton("部屋作成");
 		this.add(rCreate);
-		rCreate.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		rCreate.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		rCreate.setBounds(450,10,200,30);
 		rCreate.addMouseListener(this);
-		rule=new JButton("ルール表示");
+		rule=new RoundedCornerButton("ルール表示");
 		this.add(rule);
-		rule.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		rule.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		rule.setBounds(20,450,200,30);
 		rule.addMouseListener(this);
-		passChange=new JButton("パスワード変更");
+		passChange=new RoundedCornerButton("パスワード変更");
 		this.add(passChange);
-		passChange.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		passChange.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		passChange.setBounds(240,450,200,30);
 		passChange.addMouseListener(this);
-		exitButton=new JButton("終了");
+		exitButton=new RoundedCornerButton("終了");
 		this.add(exitButton);
-		exitButton.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		exitButton.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		exitButton.setBounds(460,450,200,30);
 		exitButton.addMouseListener(this);
-		renew=new JButton("検索");
+		renew=new RoundedCornerButton("検索");
 		this.add(renew);
-		renew.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
-		renew.setBounds(320,10,100,30);
+		renew.setFont(new Font("富士ポップ", Font.BOLD, 22));
+		renew.setBounds(325,10,100,30);
 		renew.addMouseListener(this);
 		
-		roomButton=new JButton[8];
+		roomButton=new RoundedCornerButton[8];
 		roomLabel=new JLabel[8*4];
 		
 		aikoLabel=new String[8];
@@ -76,35 +78,35 @@ public class RoomUI extends JPanel implements MouseListener{
 			this.add(roomLabel[i*4]);
 			roomLabel[i*4].setBounds(25+(i%4)*160,65+(i/4-i/8*2)*160,150,20);
 			roomLabel[i*4].addMouseListener(this);
-			roomLabel[i*4].setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
+			roomLabel[i*4].setFont(new Font("富士ポップ", Font.BOLD, 18));
 			roomLabel[i*4].setHorizontalAlignment(JLabel.CENTER);
 			if(i>7) roomLabel[i*4].setVisible(false);
 			roomLabel[i*4+1]=new JLabel("名前");
 			this.add(roomLabel[i*4+1]);
 			roomLabel[i*4+1].setBounds(25+(i%4)*160,85+(i/4-i/8*2)*160,150,20);
 			roomLabel[i*4+1].addMouseListener(this);
-			roomLabel[i*4+1].setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
+			roomLabel[i*4+1].setFont(new Font("富士ポップ", Font.BOLD, 18));
 			roomLabel[i*4+1].setHorizontalAlignment(JLabel.CENTER);
 			if(i>7) roomLabel[i*4+1].setVisible(false);
 			roomLabel[i*4+2]=new JLabel("ハンデ");
 			this.add(roomLabel[i*4+2]);
 			roomLabel[i*4+2].setBounds(15+(i%4)*160,125+(i/4-i/8*2)*160,170,20);
 			roomLabel[i*4+2].addMouseListener(this);
-			roomLabel[i*4+2].setFont(new Font("ＭＳ ゴシック", Font.BOLD, 14));
+			roomLabel[i*4+2].setFont(new Font("富士ポップ", Font.BOLD, 14));
 			roomLabel[i*4+2].setHorizontalAlignment(JLabel.CENTER);
 			if(i>7) roomLabel[i*4+2].setVisible(false);
 			roomLabel[i*4+3]=new JLabel("合言葉");
 			this.add(roomLabel[i*4+3]);
 			roomLabel[i*4+3].setBounds(25+(i%4)*160,145+(i/4-i/8*2)*160,150,20);
 			roomLabel[i*4+3].addMouseListener(this);
-			roomLabel[i*4+3].setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
+			roomLabel[i*4+3].setFont(new Font("富士ポップ", Font.BOLD, 18));
 			roomLabel[i*4+3].setHorizontalAlignment(JLabel.CENTER);
 			if(i>7) roomLabel[i*4+3].setVisible(false);
-			roomButton[i]=new JButton("入室");
+			roomButton[i]=new RoundedCornerButton("入室");
 			this.add(roomButton[i]);
 			roomButton[i].setBounds(25+(i%4)*160,175+(i/4-i/8*2)*160,150,30);
 			roomButton[i].addMouseListener(this);
-			roomButton[i].setFont(new Font("ＭＳ ゴシック", Font.BOLD, 18));
+			roomButton[i].setFont(new Font("富士ポップ", Font.BOLD, 18));
 			roomButton[i].setVerticalAlignment(JLabel.CENTER);
 			if(i>7) roomButton[i].setVisible(false);
 			roomButton[i].setActionCommand("-1,"+i);
@@ -130,7 +132,7 @@ public class RoomUI extends JPanel implements MouseListener{
 		}
 		rb[0].isSelected();
 		page=1;
-		backIcon = new ImageIcon("ルーム背景.jpg");
+		backIcon = new ImageIcon("ルーム背景.png");
 		back=new JLabel(backIcon);
 		this.add(back);
 		back.setBounds(0,0,700,550);
@@ -237,7 +239,7 @@ public class RoomUI extends JPanel implements MouseListener{
 			}
 			this.repaint();
 		}else{
-			JButton theButton = (JButton)e.getComponent();//クリックしたオブジェクトを得る．キャストを忘れずに
+			RoundedCornerButton theButton = (RoundedCornerButton)e.getComponent();//クリックしたオブジェクトを得る．キャストを忘れずに
 			String[] command = theButton.getActionCommand().split(",",0);//ボタンの名前を取り出す
 			if (!command[0].equals("-1")){
 				if(roomLabel[Integer.parseInt(command[1])*4+3].getText().equals("合言葉：あり")){
@@ -253,7 +255,7 @@ public class RoomUI extends JPanel implements MouseListener{
 						}
 						if(connect[0].equals("12")){
 							check=cl.waitConnection();
-							while(!check[0].equals("14")&&!connect[0].equals("15")){
+							while(!check[0].equals("14")&&!connect[0].equals("13")){
 								cl.initConnection();
 								check=cl.waitConnection();
 							}
@@ -288,7 +290,7 @@ public class RoomUI extends JPanel implements MouseListener{
 					}
 					if(connect[0].equals("12")){
 						check=cl.waitConnection();
-						while(!check[0].equals("14")&&!connect[0].equals("15")){
+						while(!check[0].equals("14")&&!connect[0].equals("13")){
 							cl.initConnection();
 							check=cl.waitConnection();
 						}

@@ -1,5 +1,7 @@
 package othello;
 
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -110,6 +112,10 @@ public class Client extends JFrame implements ActionListener{
 	
 	public static void main(String[] args) {
 		// TODO 自動生成されたメソッド・スタブ
+		Font [] fonts=GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
+		for(int i=0;i<fonts.length;i++){
+			System.out.println(fonts[i].getName());
+		}
 		Client cl = new Client(); 
 		cl.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		cl.setVisible(true);

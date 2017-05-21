@@ -1,24 +1,73 @@
 package othello;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JButton;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 public class TitleUI extends JPanel implements MouseListener,ActionListener{
 	Client cl;
-	private JPasswordField pass;
-	private JTextField name;
-	private JLabel title,passLabel,nameLabel;
-	private JButton login,anew;
+	private JTextField name = new JTextField(20) {
+		  @Override protected void paintComponent(Graphics g) {
+		    if (!isOpaque()) {
+		      int w = getWidth() - 1;
+		      int h = getHeight() - 1;
+		      Graphics2D g2 = (Graphics2D) g.create();
+		      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		                          RenderingHints.VALUE_ANTIALIAS_ON);
+		      g2.setPaint(UIManager.getColor("TextField.background"));
+		      g2.fillRoundRect(0, 0, w, h, h, h);
+		      g2.setPaint(Color.GRAY);
+		      g2.drawRoundRect(0, 0, w, h, h, h);
+		      g2.dispose();
+		    }
+		    super.paintComponent(g);
+		  }
+		  @Override public void updateUI() {
+		    super.updateUI();
+		    setOpaque(false);
+		    setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+		  }
+		};
+	private JPasswordField pass = new JPasswordField(20) {
+			  @Override protected void paintComponent(Graphics g) {
+			    if (!isOpaque()) {
+			      int w = getWidth() - 1;
+			      int h = getHeight() - 1;
+			      Graphics2D g2 = (Graphics2D) g.create();
+			      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+			                          RenderingHints.VALUE_ANTIALIAS_ON);
+			      g2.setPaint(UIManager.getColor("TextField.background"));
+			      g2.fillRoundRect(0, 0, w, h, h, h);
+			      g2.setPaint(Color.GRAY);
+			      g2.drawRoundRect(0, 0, w, h, h, h);
+			      g2.dispose();
+			    }
+			    super.paintComponent(g);
+			  }
+			  @Override public void updateUI() {
+			    super.updateUI();
+			    setOpaque(false);
+			    setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+			  }
+		};
+	private JLabel title,passLabel,nameLabel,back;
+	private RoundedCornerButton login,anew;
+	private ImageIcon backIcon;
 	private String[] connect;
 	RoomUI rUI;
 	public TitleUI(Client c,RoomUI r){
@@ -29,35 +78,37 @@ public class TitleUI extends JPanel implements MouseListener,ActionListener{
 		this.setLayout(null);
 		title=new JLabel("ロセオ");
 		this.add(title);
-		title.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 40));
+		title.setFont(new Font("ふみゴシック", Font.BOLD, 40));
 		title.setBounds(250,10,500,100);
 		nameLabel=new JLabel("ユーザ名：");
 		this.add(nameLabel);
-		nameLabel.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		nameLabel.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		nameLabel.setBounds(100,200,200,30);
-		name=new JTextField();
 		this.add(name);
-		name.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		name.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		name.setBounds(300,200,350,30);
 		passLabel=new JLabel("パスワード：");
 		this.add(passLabel);
-		passLabel.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		passLabel.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		passLabel.setBounds(100,300,350,30);
-		pass=new JPasswordField();
 		this.add(pass);
-		pass.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		pass.setFont(new Font("MS ゴシック", Font.BOLD, 22));
 		pass.setBounds(300,300,350,30);
 		
-		login=new JButton("ログイン");
+		login=new RoundedCornerButton("ログイン");
 		this.add(login);
-		login.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		login.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		login.setBounds(80,430,200,50);
 		login.addMouseListener(this);
-		anew=new JButton("新規登録");
+		anew=new RoundedCornerButton("新規登録");
 		this.add(anew);
-		anew.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 22));
+		anew.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		anew.setBounds(400,430,200,50);
 		anew.addMouseListener(this);
+		backIcon = new ImageIcon("タイトル背景.jpg");
+		back=new JLabel(backIcon);
+		this.add(back);
+		back.setBounds(0,0,700,550);
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
