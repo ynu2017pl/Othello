@@ -253,12 +253,14 @@ public class RoomUI extends JPanel implements MouseListener{
 							cl.initConnection();
 							connect=cl.waitConnection();
 						}
+						cl.initConnection();
 						if(connect[0].equals("12")){
 							check=cl.waitConnection();
-							while(!check[0].equals("14")&&!connect[0].equals("13")){
+							while(!check[0].equals("14")&&!check[0].equals("15")&&!check[0].equals("13")){
 								cl.initConnection();
 								check=cl.waitConnection();
 							}
+							cl.initConnection();
 							if(check[0].equals("14")){
 								int han=Integer.parseInt(connect[3]);
 								boolean init=false;
@@ -275,10 +277,14 @@ public class RoomUI extends JPanel implements MouseListener{
 									JOptionPane.showMessageDialog(null, "あなたは後攻です。");
 									oUI.waitEnemy();
 								}
+							}else{
+								JOptionPane.showMessageDialog(null, "接続することができませんでした");
+								cl.initConnection();
 							}
 							
 						}else{
 							JOptionPane.showMessageDialog(null, "接続することができませんでした");
+							cl.initConnection();
 						}
 					}
 				}else{
@@ -288,12 +294,14 @@ public class RoomUI extends JPanel implements MouseListener{
 						cl.initConnection();
 						connect=cl.waitConnection();
 					}
+					cl.initConnection();
 					if(connect[0].equals("12")){
 						check=cl.waitConnection();
-						while(!check[0].equals("14")&&!connect[0].equals("13")){
+						while(!check[0].equals("14")&&!check[0].equals("15")&&!check[0].equals("13")){
 							cl.initConnection();
 							check=cl.waitConnection();
 						}
+						cl.initConnection();
 						if(check[0].equals("14")){
 							int han=Integer.parseInt(connect[3]);
 							boolean init=false;
@@ -312,10 +320,12 @@ public class RoomUI extends JPanel implements MouseListener{
 							}
 						}else{
 							JOptionPane.showMessageDialog(null, "接続することができませんでした");
+							cl.initConnection();
 						}
 						
 					}else{
 						JOptionPane.showMessageDialog(null, "接続することができませんでした");
+						cl.initConnection();
 					}
 				}
 			}

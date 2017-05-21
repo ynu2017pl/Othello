@@ -174,18 +174,33 @@ public boolean battleStart(){
 		cl.send("6,1");
 		do{
 			check=cl.waitConnection();
-		}while(!check[0].equals("14")&&!check[0].equals("13"));
+		}while(!check[0].equals("14")&&!check[0].equals("15")&&!check[0].equals("13"));
 		if(check[0].equals("14")) {
+			cl.initConnection();
+			return true;
+		}else if(check[0].equals("13")){
+			JOptionPane.showMessageDialog(null, "時間切れです、もう一度作成してください");
 			cl.initConnection();
 			return true;
 		}else{
 			cl.initConnection();
+			connect=cl.waitConnection();
 			return false;
 		}
 	}else{
 		cl.send("6,0");
-		
-		return false;
+		do{
+			check=cl.waitConnection();
+		}while(!check[0].equals("15")&&!check[0].equals("13"));
+		if(check[0].equals("13")){
+			JOptionPane.showMessageDialog(null, "時間切れです、もう一度作成してください");
+			cl.initConnection();
+			return true;
+		}else{
+			cl.initConnection();
+			connect=cl.waitConnection();
+			return false;
+		}
 	}
 }
 	
@@ -227,21 +242,22 @@ public boolean battleStart(){
 			}
 			enemyName=dText.getText();
 			*/
-			System.out.print(Integer.getInteger(connect[1]));
-			boolean init=true;
-			int hand=Integer.parseInt(connect[3]);
-			if(Integer.parseInt(connect[2])==0){
-				hand*=-1;
-				init=false;
-			}
-			oUI.initBoard(init,hand,connect[1]);
-			if(Integer.parseInt(connect[2])==1){
-				cl.screenTransition((JPanel)this, "oUI");
-				JOptionPane.showMessageDialog(null, "あなたは先攻です。");
-			}else{
-				cl.screenTransition((JPanel)this, "oUI");
-				JOptionPane.showMessageDialog(null, "あなたは後攻です。");
-				oUI.waitEnemy();
+			if(!check[0].equals("13")){
+				boolean init=true;
+				int hand=Integer.parseInt(connect[3]);
+				if(Integer.parseInt(connect[2])==0){
+					hand*=-1;
+					init=false;
+				}
+				oUI.initBoard(init,hand,connect[1]);
+				if(Integer.parseInt(connect[2])==1){
+					cl.screenTransition((JPanel)this, "oUI");
+					JOptionPane.showMessageDialog(null, "あなたは先攻です。");
+				}else{
+					cl.screenTransition((JPanel)this, "oUI");
+					JOptionPane.showMessageDialog(null, "あなたは後攻です。");
+					oUI.waitEnemy();
+				}
 			}
 		}else if(e.getSource()==cancel){
 			cl.screenTransition((JPanel)this, "rUI");
