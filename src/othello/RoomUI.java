@@ -260,7 +260,7 @@ public class RoomUI extends JPanel implements MouseListener{
 								check=cl.waitConnection();
 							}
 							if(check[0].equals("14")){
-								int han=Integer.parseInt(connect[3])*(-1);
+								int han=Integer.parseInt(connect[3]);
 								boolean init=false;
 								if(Integer.parseInt(connect[2])==1){
 									init=true;
