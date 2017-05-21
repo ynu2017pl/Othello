@@ -310,6 +310,8 @@ public class RoomUI extends JPanel implements MouseListener{
 								JOptionPane.showMessageDialog(null, "あなたは後攻です。");
 								oUI.waitEnemy();
 							}
+						}else{
+							JOptionPane.showMessageDialog(null, "接続することができませんでした");
 						}
 						
 					}else{
