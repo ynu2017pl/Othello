@@ -103,7 +103,7 @@ public class PasswordChangeUI extends JPanel implements MouseListener {
 		oldPassLabel.setBounds(77,100,200,30);
 		//oldPass=new JPasswordField();
 		this.add(oldPass);
-		oldPass.setFont(new Font("富士ポップ", Font.BOLD, 22));
+		oldPass.setFont(new Font("MS ゴシック", Font.BOLD, 22));
 		oldPass.setBounds(250,100,350,30);
 		newPassLabel=new JLabel("新パスワード：");
 		this.add(newPassLabel);
@@ -112,8 +112,8 @@ public class PasswordChangeUI extends JPanel implements MouseListener {
 		newPassLabel.setBounds(77,200,350,30);
 		//newPass=new JPasswordField();
 		this.add(newPass);
-		newPass.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		newPass.setBounds(250,200,350,30);
+		newPass.setFont(new Font("MS ゴシック", Font.BOLD, 22));
 		renewPassLabel=new JLabel("新パスワード(再)：");
 		this.add(renewPassLabel);
 		renewPassLabel.setFont(new Font("富士ポップ", Font.BOLD, 22));
@@ -121,7 +121,7 @@ public class PasswordChangeUI extends JPanel implements MouseListener {
 		renewPassLabel.setForeground(Color.WHITE);
 		//renewPass=new JPasswordField();
 		this.add(renewPass);
-		renewPass.setFont(new Font("富士ポップ", Font.BOLD, 22));
+		renewPass.setFont(new Font("MS ゴシック", Font.BOLD, 22));
 		renewPass.setBounds(250,300,350,30);
 		
 		change=new RoundedCornerButton("変更");

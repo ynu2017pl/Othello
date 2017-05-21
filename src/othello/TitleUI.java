@@ -79,21 +79,21 @@ public class TitleUI extends JPanel implements MouseListener,ActionListener{
 		title=new JLabel("ロセオ");
 		this.add(title);
 		title.setFont(new Font("ふみゴシック", Font.BOLD, 40));
-		title.setBounds(250,10,500,100);
+		title.setBounds(280,10,500,100);
 		nameLabel=new JLabel("ユーザ名：");
 		this.add(nameLabel);
 		nameLabel.setFont(new Font("富士ポップ", Font.BOLD, 22));
-		nameLabel.setBounds(100,200,200,30);
+		nameLabel.setBounds(123,200,200,30);
 		this.add(name);
 		name.setFont(new Font("富士ポップ", Font.BOLD, 22));
-		name.setBounds(300,200,350,30);
+		name.setBounds(250,200,350,30);
 		passLabel=new JLabel("パスワード：");
 		this.add(passLabel);
 		passLabel.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		passLabel.setBounds(100,300,350,30);
 		this.add(pass);
 		pass.setFont(new Font("MS ゴシック", Font.BOLD, 22));
-		pass.setBounds(300,300,350,30);
+		pass.setBounds(250,300,350,30);
 		
 		login=new RoundedCornerButton("ログイン");
 		this.add(login);
