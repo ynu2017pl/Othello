@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -82,7 +83,8 @@ public class PasswordChangeUI extends JPanel implements MouseListener {
 		    setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
 		  }
 	};
-	private JLabel title,newPassLabel,oldPassLabel,renewPassLabel;
+	private JLabel title,newPassLabel,oldPassLabel,renewPassLabel,back;
+	private ImageIcon backIcon;
 	private RoundedCornerButton change,cancel;
 	public PasswordChangeUI(Client c){
 		cl=c;
@@ -91,10 +93,12 @@ public class PasswordChangeUI extends JPanel implements MouseListener {
 		this.setLayout(null);
 		title=new JLabel("パスワード変更");
 		this.add(title);
+		title.setForeground(Color.WHITE);
 		title.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		title.setBounds(10,10,300,30);
 		oldPassLabel=new JLabel("旧パスワード：");
 		this.add(oldPassLabel);
+		oldPassLabel.setForeground(Color.WHITE);
 		oldPassLabel.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		oldPassLabel.setBounds(77,100,200,30);
 		//oldPass=new JPasswordField();
@@ -103,6 +107,7 @@ public class PasswordChangeUI extends JPanel implements MouseListener {
 		oldPass.setBounds(250,100,350,30);
 		newPassLabel=new JLabel("新パスワード：");
 		this.add(newPassLabel);
+		newPassLabel.setForeground(Color.WHITE);
 		newPassLabel.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		newPassLabel.setBounds(77,200,350,30);
 		//newPass=new JPasswordField();
@@ -113,6 +118,7 @@ public class PasswordChangeUI extends JPanel implements MouseListener {
 		this.add(renewPassLabel);
 		renewPassLabel.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		renewPassLabel.setBounds(30,300,350,30);
+		renewPassLabel.setForeground(Color.WHITE);
 		//renewPass=new JPasswordField();
 		this.add(renewPass);
 		renewPass.setFont(new Font("富士ポップ", Font.BOLD, 22));
@@ -128,6 +134,10 @@ public class PasswordChangeUI extends JPanel implements MouseListener {
 		cancel.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		cancel.setBounds(400,430,200,50);
 		cancel.addMouseListener(this);
+		backIcon = new ImageIcon("パスワード変更.jpg");
+		back=new JLabel(backIcon);
+		this.add(back);
+		back.setBounds(0,0,700,550);
 	}
 	
 	@Override
