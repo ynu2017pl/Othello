@@ -174,13 +174,14 @@ public boolean battleStart(){
 		cl.send("6,1");
 		do{
 			check=cl.waitConnection();
-		}while(!check[0].equals("14")&&!check[0].equals("15")&&!check[0].equals("13"));
+		}while(!check[0].equals("14")&&!check[0].equals("15")&&!check[0].equals("13")&&!check[0].equals("8"));
 		if(check[0].equals("14")) {
 			cl.initConnection();
 			return true;
-		}else if(check[0].equals("13")){
-			JOptionPane.showMessageDialog(null, "時間切れです、もう一度作成してください");
+		}else if(check[0].equals("13")||check[0].equals("8")){
+			JOptionPane.showMessageDialog(null, "時間切れです、もう一度部屋を作成してください");
 			cl.initConnection();
+			cl.screenTransition((JPanel)this, "rUI");
 			return true;
 		}else{
 			cl.initConnection();
@@ -191,10 +192,11 @@ public boolean battleStart(){
 		cl.send("6,0");
 		do{
 			check=cl.waitConnection();
-		}while(!check[0].equals("15")&&!check[0].equals("13"));
-		if(check[0].equals("13")){
-			JOptionPane.showMessageDialog(null, "時間切れです、もう一度作成してください");
+		}while(!check[0].equals("15")&&!check[0].equals("13")&&!check[0].equals("8"));
+		if(check[0].equals("13")||check[0].equals("8")){
+			JOptionPane.showMessageDialog(null, "時間切れです、もう一度部屋を作成してください");
 			cl.initConnection();
+			cl.screenTransition((JPanel)this, "rUI");
 			return true;
 		}else{
 			cl.initConnection();
@@ -242,7 +244,7 @@ public boolean battleStart(){
 			}
 			enemyName=dText.getText();
 			*/
-			if(!check[0].equals("13")){
+			if(!check[0].equals("13")&&!check[0].equals("8")){
 				boolean init=true;
 				int hand=Integer.parseInt(connect[3]);
 				if(Integer.parseInt(connect[2])==0){

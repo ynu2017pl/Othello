@@ -348,6 +348,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 		}else if(connect[0].equals("8")){
 			if(connect[1].equals("-6")){
 				JOptionPane.showMessageDialog(null, "相手は敗北を認めました。あなたの勝ちです。");
+				cl.send("9,0");
 				cl.screenTransition((JPanel)this, "rUI");
 			}else if(connect[1].equals("-7")){
 				JOptionPane.showMessageDialog(null, "相手は時間切れになりました。あなたの勝ちです。");
@@ -441,6 +442,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 			int finish = JOptionPane.showConfirmDialog(this, "本当に投了しますか？","投了",0);
 			if (finish == JOptionPane.YES_OPTION){
 				cl.send("8,-6,-6,-6");
+				cl.send("9,0");
 				cl.screenTransition((JPanel)this, "rUI");
 			}
 		}else{
@@ -574,6 +576,7 @@ public class OthelloUI extends JPanel implements MouseListener,ChangeListener,Ac
 						}else if(connect[0].equals("8")){
 							if(connect[1].equals("-6")){
 								JOptionPane.showMessageDialog(null, "相手は敗北を認めました。あなたの勝ちです。");
+								cl.send("9,0");
 								cl.screenTransition((JPanel)this, "rUI");
 							}else if(connect[1].equals("-7")){
 								JOptionPane.showMessageDialog(null, "相手は時間切れになりました。あなたの勝ちです。");
