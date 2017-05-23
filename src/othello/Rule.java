@@ -14,15 +14,15 @@ public class Rule extends JFrame implements MouseListener{
 	private ImageIcon ruleIcon[],backIcon;
 	private int i=0;
 	public Rule(){
-		this.setSize(700,650);
+		this.setSize(720,700);
 		next=new RoundedCornerButton("次へ");
 		this.add(next);
-		next.setBounds(550, 550, 100, 50);
+		next.setBounds(550, 525, 100, 50);
 		next.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		next.addMouseListener(this);
 		back=new RoundedCornerButton("前へ");
 		this.add(back);
-		back.setBounds(50, 550, 100, 50);
+		back.setBounds(50, 525, 100, 50);
 		back.setFont(new Font("富士ポップ", Font.BOLD, 22));
 		back.addMouseListener(this);
 		ruleIcon=new ImageIcon[6];
